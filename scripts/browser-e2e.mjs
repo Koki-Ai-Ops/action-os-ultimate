@@ -14,16 +14,17 @@ try {
   await page.evaluate((key) => localStorage.removeItem(key), STORAGE_KEY);
   await page.reload({ waitUntil: 'domcontentloaded' });
 
+  // Follow the same path as a real user: Home -> Analysis.
+  await page.locator('[data-view="create"]').click();
+  await page.locator('#mainInput').waitFor({ state: 'visible', timeout: 10_000 });
   await page.locator('#mainInput').fill(`${marker} 重要な事業タスクを今日中に整理して、次の一手を決めたい。`);
   await page.locator('#tagsInput').fill('e2e, regression');
   await page.locator('#analyzeBtn').click();
 
   const resultCard = page.locator('#resultCard');
   await resultCard.waitFor({ state: 'visible', timeout: 10_000 });
-  await assert.doesNotReject(async () => {
-    const text = await resultCard.innerText();
-    assert.ok(text.trim().length > 20, 'analysis result should render meaningful content');
-  });
+  const resultText = await resultCard.innerText();
+  assert.ok(resultText.trim().length > 20, 'analysis result should render meaningful content');
 
   await page.locator('#saveBtn').click();
 
@@ -40,8 +41,8 @@ try {
   assert.ok(libraryText.trim().length > 0, 'saved item should render in library');
   assert.doesNotMatch(libraryText, /保存した分析はありません|データがありません/, 'library should not be empty after save');
 
-  const downloadPromise = page.waitForEvent('download');
   await page.locator('[data-view="settings"]').click();
+  const downloadPromise = page.waitForEvent('download');
   await page.locator('#exportBtn').click();
   const download = await downloadPromise;
   const path = await download.path();
@@ -62,7 +63,7 @@ try {
   assert.ok(summaryText.trim().length > 0, 'in-app self-test should produce a summary');
   assert.doesNotMatch(summaryText, /FAIL|失敗/i, 'in-app self-test should not report failure');
 
-  console.log('Action OS browser E2E passed: analyze, save, library, export, reload persistence, and in-app self-test.');
+  console.log('Action OS browser E2E passed: navigation, analyze, save, library, export, reload persistence, and in-app self-test.');
 } finally {
   await browser.close();
 }
