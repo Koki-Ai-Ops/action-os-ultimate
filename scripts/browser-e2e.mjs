@@ -55,6 +55,37 @@ try {
   }, STORAGE_KEY);
   assert.equal(persisted?.items?.length, 1, 'saved data should survive reload');
 
+  // Backup is only useful if recovery works after a destructive action.
+  await page.locator('[data-view="settings"]').click();
+  page.on('dialog', async dialog => dialog.accept());
+  await page.locator('#clearAllBtn').click();
+  await page.waitForFunction((key) => {
+    const raw = localStorage.getItem(key);
+    if (!raw) return true;
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed.items) && parsed.items.length === 0;
+    } catch {
+      return false;
+    }
+  }, STORAGE_KEY);
+
+  await page.locator('#importInput').setInputFiles(path);
+  await page.waitForFunction((key) => {
+    const raw = localStorage.getItem(key);
+    if (!raw) return false;
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed.items) && parsed.items.length === 1;
+    } catch {
+      return false;
+    }
+  }, STORAGE_KEY);
+
+  await page.locator('[data-view="library"]').click();
+  const restoredLibraryText = await page.locator('#libraryList').innerText();
+  assert.doesNotMatch(restoredLibraryText, /保存した分析はありません|データがありません/, 'import should restore library data');
+
   await page.locator('[data-view="test"]').click();
   await page.locator('#runTestsBtn').click();
   const summary = page.locator('#testSummary');
@@ -63,7 +94,7 @@ try {
   assert.ok(summaryText.trim().length > 0, 'in-app self-test should produce a summary');
   assert.doesNotMatch(summaryText, /FAIL|失敗/i, 'in-app self-test should not report failure');
 
-  console.log('Action OS browser E2E passed: navigation, analyze, save, library, export, reload persistence, and in-app self-test.');
+  console.log('Action OS browser E2E passed: navigation, analyze, save, library, export, reload persistence, clear-all, backup restore, and in-app self-test.');
 } finally {
   await browser.close();
 }
