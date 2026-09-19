@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1734" />
+  <meta name="description" content="AI集客アシスタント。今日の集客、AIと3分で決める。無料β・決済なし・自動投稿なし・人間承認。" />
+  <title>AI集客アシスタント｜無料β</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home">AI集客アシスタント</a>
+    <nav>
+      <button data-view="home">トップ</button>
+      <button data-view="dashboard">ダッシュボード</button>
+      <button data-view="agents">6担当</button>
+      <button data-view="content">投稿確認</button>
+      <button data-view="analytics">振り返り</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="view-home" class="view active">
+      <div class="hero" id="home">
+        <div class="eyebrow">無料β・決済なし・自動投稿なし・人間承認</div>
+        <h1>今日の集客、<br><span>AIと3分で決める。</span></h1>
+        <p class="lead">店舗情報と目標を入れると、「今日やる1つ」「SNS投稿案1つ」「改善ポイント1つ」を整理します。最終判断は人間が行います。</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#demo">無料デモを試す</a>
+          <button class="btn ghost" data-view="dashboard">本体を見る</button>
+        </div>
+      </div>
+
+      <section class="section">
+        <h2>よくある3つの詰まり</h2>
+        <div class="cards three">
+          <article class="card"><h3>何を投稿するか決まらない</h3><p>投稿そのものより、テーマを決める時間がかかる。</p></article>
+          <article class="card"><h3>施策が増えすぎる</h3><p>候補は多いのに、今日やる1つに絞れない。</p></article>
+          <article class="card"><h3>振り返りが続かない</h3><p>反応を見ても、次の改善へつながらない。</p></article>
+        </div>
+      </section>
+
+      <section class="section alt">
+        <h2>3ステップだけ</h2>
+        <div class="steps">
+          <div><span>1</span><h3>業種と目標を選ぶ</h3></div>
+          <div><span>2</span><h3>今日の案を3点に絞る</h3></div>
+          <div><span>3</span><h3>人が確認して使う</h3></div>
+        </div>
+      </section>
+
+      <section class="section dark">
+        <div class="section-head"><div><small>既存の仕組みを活用</small><h2>6人のAI担当が順番に整理</h2></div><p>戦略・調査・SEO・コンテンツ・SNS・分析。全員が同じ店舗情報と判断履歴を使います。</p></div>
+        <div class="agent-grid" id="agent-role-grid"></div>
+      </section>
+
+      <section class="section" id="demo">
+        <div class="demo-wrap">
+          <div>
+            <div class="eyebrow light">約3分・ログイン不要</div>
+            <h2>無料デモ</h2>
+            <p>個人情報は不要です。店舗名も任意。結果はこの端末内にだけ保存します。</p>
+          </div>
+          <form id="demo-form" class="demo-form">
+            <label>業種
+              <select id="industry" required>
+                <option value="飲食店">飲食店</option>
+                <option value="美容院">美容院</option>
+                <option value="小売">小売</option>
+                <option value="その他">その他</option>
+              </select>
+            </label>
+            <label>店舗名（任意）<input id="storeName" placeholder="例：まちのカフェ" /></label>
+            <label>目標
+              <select id="goal" required>
+                <option value="新規客">新規客</option>
+                <option value="リピート">リピート</option>
+                <option value="SNS反応">SNS反応</option>
+                <option value="来店予約">来店予約</option>
+              </select>
+            </label>
+            <button class="btn primary full" type="submit">サンプル結果を見る</button>
+          </form>
+        </div>
+        <div id="demo-result" class="result hidden"></div>
+      </section>
+    </section>
+
+    <section id="view-dashboard" class="view appview">
+      <div class="pagehead"><small>公開β</small><h1>ダッシュボード</h1><p>今日の優先事項と確認待ちをまとめます。</p></div>
+      <div id="dashboard-stats" class="stats"></div>
+      <div class="cards two">
+        <article class="card"><h3>今日やる1つ</h3><div id="priority-action"></div></article>
+        <article class="card"><h3>安全な使い方</h3><ul><li>事実・価格・営業時間を確認</li><li>AI案はそのまま公開しない</li><li>承認後も自分で投稿する</li></ul></article>
+      </div>
+    </section>
+
+    <section id="view-agents" class="view appview">
+      <div class="pagehead"><small>6担当</small><h1>AI担当の流れ</h1><p>これはサンプル進行です。外部APIや自動投稿は行いません。</p></div>
+      <div id="agents-list" class="agent-list"></div>
+      <button id="run-agents" class="btn primary">6担当をもう一度実行</button>
+    </section>
+
+    <section id="view-content" class="view appview">
+      <div class="pagehead"><small>人間承認</small><h1>投稿案の確認</h1><p>承認・却下の理由は次回の提案条件に残ります。</p></div>
+      <div class="tabs"><button class="tab active" data-status="review">承認待ち</button><button class="tab" data-status="approved">承認済み</button><button class="tab" data-status="rejected">却下</button></div>
+      <div id="content-list"></div>
+    </section>
+
+    <section id="view-analytics" class="view appview">
+      <div class="pagehead"><small>振り返り</small><h1>分析・改善</h1><p>表示数などの数値はデモ用で、実際の成果ではありません。</p></div>
+      <div id="analytics-stats" class="stats"></div>
+      <div class="cards two">
+        <article class="card"><h3>確認状況</h3><div id="decision-summary"></div></article>
+        <article class="card"><h3>次回に引き継ぐ学び</h3><div id="learning-list"></div></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>AI集客アシスタント — 無料β / 決済なし / 外部自動投稿なし / 人間承認</footer>
+  <script src="app.js"></script>
+</body>
+</html>
