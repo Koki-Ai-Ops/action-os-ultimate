@@ -15,3 +15,4 @@
 登録不要・決済なし・外部への自動投稿なし。入力内容と判断履歴は、この端末内に保存されます。
 
 ---
+フィードバック: https://github.com/Koki-Ai-Ops/action-os-ultimate/issues/1
