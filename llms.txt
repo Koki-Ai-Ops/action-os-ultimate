@@ -1,0 +1,23 @@
+# 集客整理帳
+
+集客整理帳は、小規模店舗・小規模サービス向けに「今日やる1つ」「投稿案」「次回見ること」を約3分で整理する無料Webツールです。
+
+## Main
+- App: https://ai-o48s2t.v2.appdeploy.ai/
+- Overview: https://koki-ai-ops.github.io/action-os-ultimate/shukyaku/
+- About: https://koki-ai-ops.github.io/action-os-ultimate/shukyaku/about/
+- FAQ: https://koki-ai-ops.github.io/action-os-ultimate/shukyaku/faq/
+
+## Industries
+- Restaurant: https://koki-ai-ops.github.io/action-os-ultimate/shukyaku/restaurant/
+- Salon: https://koki-ai-ops.github.io/action-os-ultimate/shukyaku/salon/
+- Retail: https://koki-ai-ops.github.io/action-os-ultimate/shukyaku/retail/
+- Other services: https://koki-ai-ops.github.io/action-os-ultimate/shukyaku/service/
+
+## Product facts
+- Free beta
+- No login
+- No payment
+- No external auto-posting
+- User decisions stored locally in browser localStorage
+- No fabricated PV, click, sales or outcome metrics
