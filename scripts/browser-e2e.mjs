@@ -74,9 +74,19 @@ try {
   }, STORAGE_KEY);
   assert.equal(persisted?.items?.length, 1, 'saved data should survive reload');
 
-  // Backup is only useful if recovery works after a destructive action.
+  // Destructive actions must respect cancel and must remove the unsaved draft.
+  await page.locator('[data-view="create"]').click();
+  await page.locator('#mainInput').fill('UNSAVED_PRIVATE_DRAFT_E2E');
+  await page.locator('#tagsInput').fill('unpublished');
   await page.locator('[data-view="settings"]').click();
-  page.on('dialog', async dialog => dialog.accept());
+
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.locator('#clearAllBtn').click();
+  const afterCancel = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), STORAGE_KEY);
+  assert.equal(afterCancel.items.length, 1, 'cancel must leave saved data unchanged');
+  assert((await page.evaluate(() => localStorage.getItem('action_os_draft_v1')) || '').includes('UNSAVED_PRIVATE_DRAFT_E2E'), 'cancel must keep the draft');
+
+  page.once('dialog', dialog => dialog.accept());
   await page.locator('#clearAllBtn').click();
   await page.waitForFunction((key) => {
     const raw = localStorage.getItem(key);
@@ -88,6 +98,14 @@ try {
       return false;
     }
   }, STORAGE_KEY);
+
+  const draftAfterClear = await page.evaluate(() => localStorage.getItem('action_os_draft_v1'));
+  assert.equal(draftAfterClear, '', 'clear-all must remove the private unsaved draft');
+  assert.equal(await page.locator('#mainInput').inputValue(), '', 'clear-all must reset the input field');
+  assert.equal(await page.locator('#tagsInput').inputValue(), '', 'clear-all must reset unsaved tags');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  assert.equal(await page.locator('#mainInput').inputValue(), '', 'deleted draft must not return on reload');
+  console.log('ACTION_OS_CLEAR_ALL_DRAFT_AND_CANCEL_OK');
 
   await page.locator('#importInput').setInputFiles(path);
   await page.waitForFunction((key) => {
@@ -113,7 +131,7 @@ try {
   assert.ok(summaryText.trim().length > 0, 'in-app self-test should produce a summary');
   assert.doesNotMatch(summaryText, /FAIL|失敗/i, 'in-app self-test should not report failure');
 
-  console.log('Action OS browser E2E passed: mobile navigation, analyze, save, library, invalid backup rejection without data loss, export, reload persistence, clear-all, backup restore, and in-app self-test.');
+  console.log('Action OS browser E2E passed: mobile navigation, analyze, save, invalid backup rejection, export, clear cancel, saved/draft removal, reload privacy, backup restore, and in-app self-test.');
 } finally {
   await browser.close();
 }
