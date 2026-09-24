@@ -42,6 +42,25 @@ try {
   assert.doesNotMatch(libraryText, /保存した分析はありません|データがありません/, 'library should not be empty after save');
 
   await page.locator('[data-view="settings"]').click();
+
+  // A broken/hostile JSON backup must not alter an already saved item.
+  const corrupted = [
+    { version: 1, items: [{ ...saved.items[0], tags: 'not-an-array' }] },
+    { version: 1, items: [saved.items[0], saved.items[0]] },
+    { version: 999, items: [saved.items[0]] },
+  ];
+  for (const [index, payload] of corrupted.entries()) {
+    await page.locator('#importInput').setInputFiles({
+      name: `invalid-${index}.json`,
+      mimeType: 'application/json',
+      buffer: Buffer.from(JSON.stringify(payload), 'utf8'),
+    });
+    await page.getByText('バックアップ形式が正しくありません。現在のデータは変更していません').waitFor({ state: 'visible', timeout: 5000 });
+    const preserved = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), STORAGE_KEY);
+    assert.deepEqual(preserved.items, saved.items, 'invalid backup must not mutate existing data');
+  }
+  console.log('ACTION_OS_INVALID_BACKUP_PRESERVES_DATA_OK');
+
   const downloadPromise = page.waitForEvent('download');
   await page.locator('#exportBtn').click();
   const download = await downloadPromise;
@@ -94,7 +113,7 @@ try {
   assert.ok(summaryText.trim().length > 0, 'in-app self-test should produce a summary');
   assert.doesNotMatch(summaryText, /FAIL|失敗/i, 'in-app self-test should not report failure');
 
-  console.log('Action OS browser E2E passed: navigation, analyze, save, library, export, reload persistence, clear-all, backup restore, and in-app self-test.');
+  console.log('Action OS browser E2E passed: mobile navigation, analyze, save, library, invalid backup rejection without data loss, export, reload persistence, clear-all, backup restore, and in-app self-test.');
 } finally {
   await browser.close();
 }
