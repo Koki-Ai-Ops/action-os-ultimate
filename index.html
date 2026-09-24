@@ -118,7 +118,47 @@ async function copyText(text){try{await navigator.clipboard.writeText(text);toas
 function handleAction(id,act){const i=state.items.findIndex(x=>x.id===id);if(i<0)return;const x=state.items[i];if(act==='done'){x.status=x.status==='done'?'open':'done';x.updatedAt=Date.now();persist();toast(x.status==='done'?'完了にしました':'未完了に戻しました')}if(act==='pin'){x.pinned=!x.pinned;x.updatedAt=Date.now();persist();toast(x.pinned?'ピン留めしました':'ピンを外しました')}if(act==='delete'){if(confirm('この保存データを削除しますか？')){state.items.splice(i,1);persist();toast('削除しました')}}if(act==='edit'){currentResult={...x};editingId=x.id;selectedCat=x.category;$$('#categoryChips .chip').forEach(b=>b.classList.toggle('active',b.dataset.cat===x.category));$('#mainInput').value=x.input;$('#tagsInput').value=(x.tags||[]).join(', ');renderResult(currentResult);go('create')}if(act==='copy'){copyText(makeDeepPrompt(x))}}
 function addSample(){const text='新しいAIサービス案を考えている。便利そうな機能は多いが、誰がいくら払うかはまだ確かめていない。';const r=analyze(text,'business');const item={...r,id:uid(),tags:['サンプル'],status:'open',pinned:true,createdAt:Date.now(),updatedAt:Date.now()};state.items.unshift(item);persist();toast('サンプルを追加しました')}
 function exportJson(){const blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),items:state.items},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='action-os-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('バックアップを書き出しました')}
-function importJson(file){const rd=new FileReader();rd.onload=()=>{try{const x=JSON.parse(rd.result);if(!x||!Array.isArray(x.items))throw new Error();const valid=x.items.filter(i=>i&&i.id&&i.title&&i.category);const map=new Map(state.items.map(i=>[i.id,i]));valid.forEach(i=>map.set(i.id,i));state.items=[...map.values()];persist();toast(valid.length+'件を読み込みました')}catch{toast('読み込みに失敗しました')}};rd.readAsText(file)}
+function validBackupItem(i){
+ if(!i||typeof i!=='object'||Array.isArray(i))return false;
+ const fields=['id','title','category','input','conclusion','next','reason','effect','risk','dont','check'];
+ if(!fields.every(k=>typeof i[k]==='string'&&i[k].length<=20000))return false;
+ if(!/^[a-z0-9_-]{1,80}$/i.test(i.id)||!i.title.trim()||!i.input.trim())return false;
+ if(!['study','business','sns','decision','other'].includes(i.category))return false;
+ if(typeof i.score!=='number'||!Number.isFinite(i.score)||i.score<0||i.score>100)return false;
+ if(!['open','done'].includes(i.status)||typeof i.pinned!=='boolean')return false;
+ if(![i.createdAt,i.updatedAt].every(n=>typeof n==='number'&&Number.isFinite(n)&&n>=0))return false;
+ if(!Array.isArray(i.tags)||i.tags.length>50||!i.tags.every(t=>typeof t==='string'&&t.length<=100))return false;
+ if(!Array.isArray(i.steps)||i.steps.length>50||!i.steps.every(t=>typeof t==='string'&&t.length<=2000))return false;
+ if(!Array.isArray(i.extra)||i.extra.length>30||!i.extra.every(e=>Array.isArray(e)&&e.length===2&&e.every(t=>typeof t==='string'&&t.length<=2000)))return false;
+ return true;
+}
+function safeBackupItem(i){
+ const fields=['id','title','category','input','conclusion','next','reason','effect','risk','dont','check','score','status','pinned','createdAt','updatedAt'];
+ const clean={};for(const field of fields)clean[field]=i[field];
+ clean.tags=[...i.tags];clean.steps=[...i.steps];clean.extra=i.extra.map(pair=>[...pair]);
+ return clean;
+}
+function importJson(file){
+ if(!file||file.size>5*1024*1024){toast('5MB以内のJSONバックアップを選んでください');return}
+ const rd=new FileReader();
+ rd.onerror=()=>toast('ファイルを読み込めませんでした');
+ rd.onload=()=>{
+  try{
+   const x=JSON.parse(rd.result);
+   if(!x||x.version!==1||!Array.isArray(x.items)||x.items.length>5000)throw new Error('format');
+   if(!x.items.every(validBackupItem))throw new Error('item');
+   const ids=x.items.map(i=>i.id);
+   if(new Set(ids).size!==ids.length)throw new Error('duplicate');
+   const cleanItems=x.items.map(safeBackupItem);
+   const map=new Map(state.items.map(i=>[i.id,i]));
+   cleanItems.forEach(i=>map.set(i.id,i));
+   state.items=[...map.values()];
+   persist();
+   toast(cleanItems.length+'件を読み込みました');
+  }catch{toast('バックアップ形式が正しくありません。現在のデータは変更していません')}
+ };
+ rd.readAsText(file);
+}
 function runTests(){const tests=[];const t=(name,fn)=>{try{const v=fn();tests.push([name,!!v,!!v?'OK':'条件不一致'])}catch(e){tests.push([name,false,e.message])}};t('カテゴリ自動判定：学習',()=>detectCategory('英語のテスト勉強と単語暗記')==='study');t('カテゴリ自動判定：ビジネス',()=>detectCategory('事業の売上と利益を伸ばす')==='business');t('カテゴリ自動判定：SNS',()=>detectCategory('TikTok投稿でフォロワーを増やす')==='sns');t('分析結果に次の一手がある',()=>!!analyze('比較して決めたい','decision').next);t('短文でも分析が落ちない',()=>analyze('勉強','study').score>0);t('長文でも分析が返る',()=>!!analyze('事業 '.repeat(1000),'business').conclusion);t('JSONシリアライズ可能',()=>!!JSON.stringify({items:state.items}));t('保存ラッパーが利用可能',()=>{storageSet('__test__','1');return storageGet('__test__')==='1'});t('HTMLエスケープ',()=>esc('<script>')==='&lt;script&gt;');const tmp={items:[{id:'t',title:'x'}]};t('JSON復元',()=>safeParse(JSON.stringify(tmp),{}).items[0].id==='t');t('UID重複しにくさ',()=>uid()!==uid());t('検索ロジック',()=>['abc','tag'].join(' ').toLowerCase().includes('tag'));t('主要ボタン存在',()=>['#analyzeBtn','#saveBtn','#promptBtn','#exportBtn','#runTestsBtn'].every(s=>!!$(s)));const ok=tests.filter(x=>x[1]).length;$('#testSummary').innerHTML=`<strong class="${ok===tests.length?'test-pass':'test-fail'}">${ok}/${tests.length} 成功</strong>`;$('#testList').innerHTML=tests.map(x=>`<div class="item"><div class="item-head"><strong>${esc(x[0])}</strong><span class="${x[1]?'test-pass':'test-fail'}">${x[1]?'PASS':'FAIL'}</span></div><div class="meta">${esc(x[2])}</div></div>`).join('');return {ok,total:tests.length}}
 
 $('#nav').addEventListener('click',e=>{const b=e.target.closest('button[data-view]');if(b)go(b.dataset.view)});$('#heroStart').onclick=()=>go('create');$('#sampleBtn').onclick=()=>{addSample();go('home')};$$('[data-quick]').forEach(b=>b.onclick=()=>{editingId=null;currentResult=null;selectedCat=b.dataset.quick;$$('#categoryChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.cat===selectedCat));go('create');$('#mainInput').focus()});$('#categoryChips').onclick=e=>{const b=e.target.closest('[data-cat]');if(!b)return;selectedCat=b.dataset.cat;$$('#categoryChips .chip').forEach(x=>x.classList.toggle('active',x===b))};$('#mainInput').addEventListener('input',e=>{$('#charCount').textContent=e.target.value.length+'文字';saveDraft()});$('#tagsInput').addEventListener('input',saveDraft);$('#analyzeBtn').onclick=()=>{const text=$('#mainInput').value.trim();if(text.length<3){toast('内容をもう少し入力してください');return}const fresh=analyze(text,selectedCat);if(editingId)fresh.id=editingId;currentResult=fresh;saveDraft();renderResult(currentResult);setTimeout(()=>$('#resultCard').scrollIntoView({behavior:'smooth',block:'start'}),20)};$('#saveBtn').onclick=saveCurrent;$('#promptBtn').onclick=()=>currentResult?copyText(makeDeepPrompt(currentResult)):toast('先に分析してください');$('#resetBtn').onclick=()=>{$('#mainInput').value='';$('#tagsInput').value='';$('#charCount').textContent='0文字';currentResult=null;editingId=null;storageSet(DRAFT,'');$('#resultCard').classList.add('hidden');toast('入力をクリアしました')};$('#searchInput').addEventListener('input',renderLibrary);$('#filterSelect').addEventListener('change',renderLibrary);document.body.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b)handleAction(b.dataset.id,b.dataset.act)});$('#runTestsBtn').onclick=runTests;$('#exportBtn').onclick=exportJson;$('#importInput').onchange=e=>{if(e.target.files[0])importJson(e.target.files[0]);e.target.value=''};$('#seedBtn').onclick=addSample;$('#clearAllBtn').onclick=()=>{if(confirm('保存データをすべて削除します。元に戻せません。')){state={items:[]};persist();toast('全データを削除しました')}};$('#themeBtn').onclick=()=>{const d=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=d;storageSet(THEME,d);toast(d==='dark'?'ダークモード':'ライトモード')};
