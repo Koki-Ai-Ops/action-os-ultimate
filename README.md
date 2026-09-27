@@ -1,18 +1,13 @@
-# action-os-ultimate
+# 公募コンパス
 
-## 集客整理帳
+公募・補助金の検索・比較・保存・進捗管理用、AppDeployに依存しないHTML/Node.js実装。
 
-小規模店舗向けに、「今日やる集客」を3分で1つに絞る無料ツールです。
+## 起動
 
-- 今日やる1つ
-- 投稿案
-- 次回見ること
-- 投稿案を「使う / 見送る」
-- 判断履歴の振り返り
+Node.js 20+ で `npm test` と `npm start`。Renderの無料Webサービスで`npm start`、ヘルスチェック`/api/health`。
 
-**公開版:** https://ai-o48s2t.v2.appdeploy.ai/
+## 情報源
 
-登録不要・決済なし・外部への自動投稿なし。入力内容と判断履歴は、この端末内に保存されます。
+Jグランツ公開API（サーバー側で取得）、2026年9月27日編集のミラサポplus公募日程、J-Net21へのリンク。最新情報と条件は必ず公式公募要領で確認。政府の公式・提携サービスではありません。
 
----
-フィードバック: https://github.com/Koki-Ai-Ops/action-os-ultimate/issues/1
+保存データはブラウザごとのlocalStorageです。バックアップJSON/CSVの出力を利用してください。
