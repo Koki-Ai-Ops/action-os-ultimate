@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://koki-ai-ops.github.io/action-os-ultimate/sitemap.xml

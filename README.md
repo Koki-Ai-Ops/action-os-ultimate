@@ -1,18 +1,7 @@
-# action-os-ultimate
+# 競合コンパス（独立版）
 
-## 集客整理帳
+公式Webサイトのタイトル・説明文・見出しを取得し、比較・メモ・変更履歴を保存する日本語の競合調査ツール。AIによる架空分析はありません。
 
-小規模店舗向けに、「今日やる集客」を3分で1つに絞る無料ツールです。
+この専用ブランチには連携経由で配置した圧縮ソース `source.tar.br` と展開スクリプトがあります。ローカルでは `node unpack.cjs && tar xf source.tar && npm test && npm start` として起動します。ユーザー向けの通常ZIPはチャット内の添付ファイルを利用してください。
 
-- 今日やる1つ
-- 投稿案
-- 次回見ること
-- 投稿案を「使う / 見送る」
-- 判断履歴の振り返り
-
-**公開版:** https://ai-o48s2t.v2.appdeploy.ai/
-
-登録不要・決済なし・外部への自動投稿なし。入力内容と判断履歴は、この端末内に保存されます。
-
----
-フィードバック: https://github.com/Koki-Ai-Ops/action-os-ultimate/issues/1
+Render無料Webサービス: Build `node unpack.cjs && tar xf source.tar && npm install --omit=dev && npm test`、Start `npm start`、Health `/api/health`。調査データはユーザーのブラウザ内にのみ保存されます。ログイン・自動監視・課金はありません。
