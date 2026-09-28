@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f1">
+  <meta name="description" content="お店のSNS投稿、今日のひとつを決める。業種と目的を選んで、取り組むこと・投稿文のたたき台・振り返る項目を整理する無料ツール。登録不要。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="集客整理帳｜今日の投稿を、ひとつ決める">
+  <meta property="og:description" content="お店のSNS投稿を3分で整理。業種と目的から、今日やることと投稿文のたたき台を作れます。登録不要・無料。">
+  <title>集客整理帳｜今日の投稿を、ひとつ決める</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="#top" aria-label="集客整理帳のトップへ"><span class="mark" aria-hidden="true">集</span><span>集客整理帳<small>小さなお店のための、投稿の手引き</small></span></a>
+      <nav class="nav" aria-label="メインメニュー"><a href="#how">使い方</a><a href="#history">前回の記録</a><a class="nav-cta" href="#start">整理をはじめる <span aria-hidden="true">↗</span></a></nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> SMALL SHOP JOURNAL <span class="eyebrow-number">001 / DAILY NOTE</span></p>
+        <h1 id="hero-title">今日の投稿、<br><em>ひとつ決める。</em></h1>
+        <p class="hero-lead">毎日の発信に、たくさんのアイデアはいらない。<br>お店と今の目的に合う「今日やること」を決めて、投稿まで進めるための小さなノートです。</p>
+        <div class="hero-action"><a class="button button-primary" href="#start">今日の投稿を考える <span aria-hidden="true">↗</span></a><span class="side-note">約3分・無料・登録なし</span></div>
+      </div>
+      <div class="hero-visual" aria-label="集客整理帳の記入例">
+        <div class="paper">
+          <div class="paper-top"><span>集客整理帳</span><span>DAILY NOTE / 01</span></div>
+          <div class="paper-meta">飲食店　／　初めてのお客さま</div>
+          <div class="paper-section"><span class="paper-label">TODAY'S ONE THING</span><strong>人気の一品を、<br>写真と一緒に紹介する。</strong></div>
+          <div class="paper-rule"></div>
+          <div class="paper-section paper-small"><span class="paper-label">POST IDEA</span><p>はじめての方へ。今日はお店のおすすめを一品ご紹介します。</p></div>
+          <div class="paper-bottom"><span>01</span><span>考える → 決める → 投稿する</span></div>
+        </div>
+        <span class="visual-caption">今日の一枚が、明日のヒントになる。</span>
+      </div>
+    </section>
+
+    <section class="principle">
+      <div class="shell principle-inner"><p>大切なのは、<strong>投稿案を増やすことより、今日ひとつ行動すること。</strong></p><span>THINK LESS. DO ONE THING.</span></div>
+    </section>
+
+    <section class="how shell section" id="how" aria-labelledby="how-title">
+      <div class="section-top"><div><p class="kicker">HOW IT WORKS / 使い方</p><h2 id="how-title">迷ったときは、<br>この順番で。</h2></div><p class="section-intro">難しい設定はありません。今日の方向を決めて、文章を整え、使うか見送るかを記録するだけ。</p></div>
+      <div class="steps">
+        <article><span class="step-no">01</span><h3>お店の状況を選ぶ</h3><p>業種と、今増やしたいことを選びます。店名は入力しなくても使えます。</p></article>
+        <article><span class="step-no">02</span><h3>投稿の下書きを整える</h3><p>今日やることと文章のたたき台が出ます。価格や営業時間などは、ご自身で書き換えてください。</p></article>
+        <article><span class="step-no">03</span><h3>使った結果を残す</h3><p>使うか見送るかを記録。次回の投稿を考えるときに、前回の判断を見返せます。</p></article>
+      </div>
+    </section>
+
+    <section class="workspace" id="start" aria-labelledby="start-title">
+      <div class="shell workspace-inner">
+        <div class="workspace-head"><p class="kicker">YOUR DAILY NOTE / 今日の整理</p><h2 id="start-title">まず、今日のことから。</h2><p>業種と目的を選ぶと、取り組むことを1つに絞ります。</p></div>
+        <div class="work-grid">
+          <form id="note-form" class="form-panel">
+            <div class="panel-head"><span>01 / INPUT</span><span>所要時間：約3分</span></div>
+            <div class="field"><label for="industry">お店の業種 <span>必須</span></label><select id="industry" name="industry" required><option value="飲食店">飲食店・カフェ</option><option value="美容院">美容室・サロン</option><option value="小売">小売・物販</option><option value="その他">その他のサービス</option></select></div>
+            <div class="field"><label for="goal">今日の目的 <span>必須</span></label><select id="goal" name="goal" required><option value="新規客">初めてのお客さまを増やす</option><option value="リピート">また来てもらう</option><option value="SNS反応">投稿への反応を増やす</option><option value="予約・申込">予約・お問い合わせにつなげる</option></select></div>
+            <div class="field"><label for="store-name">お店の名前 <span class="optional">任意</span></label><input id="store-name" name="storeName" type="text" maxlength="60" autocomplete="organization" placeholder="例：喫茶みどり"><p class="field-help">名前は入れなくても大丈夫です。</p></div>
+            <button class="button button-primary submit-button" type="submit">今日のメモをつくる <span aria-hidden="true">→</span></button>
+            <p class="form-fine">入力内容はこの端末内に保存します。会員登録や外部送信はありません。</p>
+          </form>
+          <aside class="work-aside"><div class="aside-index">A NOTE FOR TODAY</div><p class="aside-quote">「何を投稿しよう」から、<br>「これを投稿しよう」へ。</p><div class="aside-divider"></div><p>結果はそのまま公開する完成原稿ではなく、書き換えて使うための下書きです。</p><span class="aside-footer">EST. 2026 / SHUKYAKU NOTE</span></aside>
+        </div>
+        <section class="result-panel" id="result" aria-labelledby="result-heading" hidden>
+          <div class="result-head"><span class="kicker">02 / TODAY'S NOTE</span><span id="result-state" class="decision-tag" aria-live="polite">まだ判断していません</span></div>
+          <h3 id="result-heading">今日のメモ</h3>
+          <div class="result-main"><span class="overline">今日やること</span><p id="action-text" class="action-text"></p></div>
+          <div class="result-columns"><div><label class="overline" for="draft-text">投稿文のたたき台 <span class="edit-hint">編集できます</span></label><textarea id="draft-text" rows="8" maxlength="3000" spellcheck="true"></textarea><div class="copy-line"><button id="copy-draft" class="button button-outline" type="button">文章をコピー <span aria-hidden="true">↗</span></button><span id="copy-feedback" class="copy-feedback" aria-live="polite"></span></div></div><div class="result-detail"><span class="overline">投稿後に見ること</span><p id="measure-text"></p><span class="overline note-label">ひとことメモ <span class="edit-hint">任意</span></span><textarea id="user-note" rows="4" maxlength="500" placeholder="例：写真が足りないので週末に撮る"></textarea><p class="detail-disclaimer">投稿前に、価格・営業時間・予約条件などの事実を必ず確認してください。</p></div></div>
+          <div class="decision-area"><span>この案をどうしますか？</span><div class="decision-buttons"><button id="use-draft" class="button button-primary" type="button">この案を使う</button><button id="pass-draft" class="button button-outline" type="button">今回は見送る</button></div></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="history shell section" id="history" aria-labelledby="history-title"><div class="section-top history-top"><div><p class="kicker">YOUR RECORD / 振り返り</p><h2 id="history-title">前回の判断が、<br>次の投稿のヒントに。</h2></div><p class="section-intro">使った案も、見送った案も。判断を残すと、お店なりの発信の形が見えてきます。</p></div><div id="history-list" class="history-list" aria-live="polite"><p class="empty-state">まだ記録はありません。最初のメモを作ってみましょう。</p></div><button id="clear-history" class="clear-button" type="button" hidden>この端末の記録を消す</button></section>
+
+    <section class="last-note"><div class="shell last-note-inner"><span>SMALL STEPS, OFTEN.</span><p>小さく決めて、<br>続けていく。</p><a class="button button-cream" href="#start">今日のメモをつくる <span aria-hidden="true">↑</span></a></div></section>
+  </main>
+
+  <footer class="footer"><div class="shell footer-inner"><span class="footer-brand">集客整理帳</span><p>業種と目的に応じた定型の提案を表示する無料ツールです。投稿や売上の成果を保証するものではありません。入力内容はこのブラウザ内に保存され、別の端末には同期されません。</p><span>© 2026 集客整理帳</span></div></footer>
+</body>
+</html>
