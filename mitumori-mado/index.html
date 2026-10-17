@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102f34">
+  <meta name="description" content="工務店・リフォーム会社向け。見積相談の入口を整える1ページ＋FAQ5件を19,800円で制作。問い合わせ前の案内を分かりやすく。">
+  <meta property="og:title" content="見積の入口を整える｜MITUMORI MADO">
+  <meta property="og:description" content="相談前の確認事項とFAQを1ページに。小規模な工務店・リフォーム会社向け、19,800円の制作パック。">
+  <meta property="og:type" content="website">
+  <title>見積の入口を整える | MITUMORI MADO</title>
+  <style>
+    :root{--ink:#123136;--ink2:#36565a;--muted:#6b7d7a;--bg:#f7f8f3;--white:#fff;--line:#d9e2dc;--mint:#d9f2d4;--green:#155f4d;--lime:#cff465;--orange:#e7a66b;--shadow:0 18px 50px rgba(18,49,54,.09)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;font-size:16px;line-height:1.75}
+    button,select{font:inherit} button{cursor:pointer} a{color:inherit}
+    .container{width:min(1120px,calc(100% - 40px));margin:auto}
+    .skip{position:absolute;top:-100px;left:20px;background:white;padding:10px;z-index:50}.skip:focus{top:10px}
+    header{position:sticky;top:0;z-index:20;background:rgba(247,248,243,.94);backdrop-filter:blur(15px);border-bottom:1px solid var(--line)}
+    .nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{text-decoration:none;font-weight:900;letter-spacing:-.045em;font-size:21px;white-space:nowrap}
+    .brand span{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--ink);color:var(--lime);border-radius:9px;margin-right:8px}
+    .navlinks{display:flex;gap:26px;align-items:center;font-weight:700;font-size:13px}.navlinks a{text-decoration:none}.navlinks a:hover{text-decoration:underline}
+    .pillbtn,.solidbtn,.outlinebtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-weight:800;text-decoration:none;border-radius:12px;padding:13px 20px;border:2px solid transparent;transition:transform .2s,background .2s}
+    .pillbtn:hover,.solidbtn:hover,.outlinebtn:hover{transform:translateY(-2px)}
+    .pillbtn{background:var(--ink);color:white;padding:9px 18px}
+    .solidbtn{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+    .outlinebtn{background:transparent;border-color:#b6c9c0;color:var(--ink)}
+    .hero{padding:88px 0 95px;position:relative;overflow:hidden}
+    .hero:after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:#dceee0;filter:blur(55px);right:-240px;top:20px;z-index:-1}
+    .hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:70px;align-items:center}
+    .eyebrow{display:inline-flex;gap:7px;align-items:center;background:#e4eee3;border:1px solid #cddfce;border-radius:99px;padding:5px 13px;color:var(--green);font-size:12px;font-weight:900;letter-spacing:.04em}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(39px,4.8vw,68px);letter-spacing:-.065em;line-height:1.26;margin:23px 0}
+    .accent{box-shadow:inset 0 -.2em 0 var(--lime)}
+    .lead{font-size:17px;color:var(--ink2);max-width:580px}
+    .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 19px}
+    .small{font-size:12px;color:var(--muted)}
+    .hero-meta{display:flex;gap:18px;flex-wrap:wrap;color:var(--ink2);font-size:13px;font-weight:700}
+    .hero-meta span:before{content:"✓";color:var(--green);font-weight:900;margin-right:6px}
+    .mock{background:var(--ink);border-radius:25px;padding:18px;transform:rotate(1.5deg);box-shadow:0 28px 65px #0b303f29}
+    .mock-top{color:#cfebdf;display:flex;justify-content:space-between;align-items:center;padding:4px 3px 14px;font-size:12px;font-weight:700}
+    .dots{letter-spacing:4px;color:#f0b88c;font-size:18px}
+    .mock-inner{background:#fff;border-radius:16px;padding:30px 27px}
+    .mock-kicker{font-size:11px;color:var(--green);font-weight:900;letter-spacing:.05em}
+    .mock-inner h3{font-size:24px;line-height:1.45;margin:7px 0 8px;letter-spacing:-.035em}
+    .mock-inner p{font-size:13px;color:var(--muted)}
+    .checklist{padding:0;margin:14px 0;list-style:none}
+    .checklist li{padding:11px 0;border-bottom:1px solid var(--line);font-weight:700;font-size:14px}
+    .checklist li:before{content:"✓";display:inline-block;background:var(--mint);color:var(--green);padding:0 6px;margin-right:10px;border-radius:5px}
+    .mock-link{display:block;text-align:center;background:var(--ink);color:white;font-weight:800;padding:10px;border-radius:9px;font-size:13px}
+    .trust-band{border-block:1px solid var(--line);background:#ecf1e9;padding:18px 0}
+    .trust-grid{display:flex;gap:25px;justify-content:space-between;flex-wrap:wrap;color:var(--green);font-weight:800;font-size:13px}
+    section{padding:94px 0}
+    .sectionhead{margin-bottom:35px}
+    .sectionhead .tag{font-weight:900;color:var(--green);letter-spacing:.1em;font-size:12px}
+    h2{font-size:clamp(29px,3.4vw,46px);letter-spacing:-.055em;line-height:1.38;margin:9px 0 12px}
+    .sub{color:var(--ink2);max-width:750px}
+    .three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .feature{border:1px solid var(--line);border-radius:18px;background:white;padding:29px 25px}
+    .feature .num{font-size:13px;font-weight:900;color:var(--green)}
+    .feature h3{font-size:20px;margin:15px 0 8px;letter-spacing:-.03em}
+    .feature p{font-size:14px;color:var(--ink2);margin:0}
+    .demo-section{background:#e8f0e8}
+    .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+    .demo-form,.result{background:white;border:1px solid #d5e3d7;border-radius:20px;padding:28px;box-shadow:var(--shadow)}
+    .demo-form label{display:block;font-size:13px;font-weight:900;margin:12px 0 6px}
+    .demo-form select{display:block;width:100%;border:1px solid #b7cbc1;background:#fafdfa;border-radius:10px;padding:12px 14px;color:var(--ink)}
+    .demo-note{font-size:12px;color:var(--muted);margin:14px 0 0}
+    .result-title{font-size:12px;font-weight:900;color:var(--green);margin-bottom:8px}
+    .result h3{font-size:20px;margin:0 0 14px}
+    .result ol{padding-left:20px;font-size:14px;margin:0 0 16px}
+    .result li{padding:6px 0}
+    .result .outlinebtn{font-size:13px;padding:9px 13px}
+    #copyStatus{font-size:12px;color:var(--green);min-height:18px;margin:9px 0 0}
+    .offer-grid{display:grid;grid-template-columns:1fr .85fr;gap:30px}
+    .deliverables{background:white;border:1px solid var(--line);border-radius:20px;padding:34px}
+    .deliverables ul{padding:0;list-style:none;margin:16px 0 0}
+    .deliverables li{border-bottom:1px solid var(--line);padding:14px 0;font-weight:700}
+    .deliverables li:before{content:"◉";color:var(--green);margin-right:12px}
+    .price{background:var(--ink);color:white;border-radius:20px;padding:34px}
+    .price .name{font-size:14px;color:#aee0ce;font-weight:800}
+    .price .amount{font-size:clamp(42px,4vw,59px);letter-spacing:-.05em;line-height:1.25;font-weight:900;margin:12px 0}
+    .price .amount span{font-size:17px;font-weight:700}
+    .price p{color:#c5dcd7;font-size:14px}
+    .price .solidbtn{width:100%;margin:10px 0 14px}
+    .price .note{font-size:12px;color:#bfd0ca}
+    .steps{counter-reset:step;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .step{padding:18px 0;border-top:3px solid var(--ink)}
+    .step:before{counter-increment:step;content:"0" counter(step);display:block;color:var(--green);font-size:12px;font-weight:900;margin-bottom:12px}
+    .step h3{font-size:17px;margin-bottom:6px}
+    .step p{font-size:13px;color:var(--ink2)}
+    .faq-section{background:white}
+    details{border-bottom:1px solid var(--line);padding:16px 4px}
+    summary{font-weight:800;cursor:pointer;list-style:none}
+    summary::-webkit-details-marker{display:none}
+    summary:after{content:"＋";float:right;margin-left:12px;color:var(--green)}
+    details[open] summary:after{content:"−"}
+    details p{font-size:14px;color:var(--ink2);margin:12px 0 4px}
+    .bottom{background:var(--ink);color:white;padding:64px 0}
+    .bottom h2{font-size:clamp(27px,3.6vw,42px)}
+    .bottom p{color:#c6dbd3}
+    .bottom .solidbtn{margin-top:12px}
+    footer{background:#0b262b;color:#b9c8c5;padding:25px 0;font-size:12px}
+    footer .container{display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap}
+    :focus-visible{outline:3px solid #edab55;outline-offset:3px}
+    @media(max-width:830px){.navlinks a:not(.pillbtn){display:none}.hero-grid,.demo-grid,.offer-grid{grid-template-columns:1fr}.hero{padding:55px 0 74px}.mock{transform:none;max-width:540px}.three{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr;gap:10px 20px}.trust-grid{justify-content:flex-start}section{padding:70px 0}}
+    @media(max-width:450px){.container{width:min(100% - 28px,1120px)}.nav{min-height:66px}.brand{font-size:17px}.navlinks .pillbtn{font-size:12px;padding:8px 10px}.hero-cta>a{width:100%}.mock-inner{padding:22px 19px}.steps{grid-template-columns:1fr}.feature,.demo-form,.result,.deliverables,.price{padding:22px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto} .pillbtn,.solidbtn,.outlinebtn{transition:none}}
+  </style>
+</head>
+<body>
+<a class="skip" href="#main">本文へ移動</a>
+<header><div class="container nav">
+  <a class="brand" href="#top" aria-label="MITUMORI MADO トップ"><span>間</span>MITUMORI MADO</a>
+  <nav class="navlinks" aria-label="メインメニュー">
+    <a href="#problem">解決すること</a><a href="#sample">体験デモ</a><a href="#plan">料金</a>
+    <a class="pillbtn" href="#contact">相談する ↗</a>
+  </nav>
+</div></header>
+<main id="main">
+<section class="hero" id="top"><div class="container hero-grid">
+  <div>
+    <div class="eyebrow">工務店・リフォーム会社向け｜小さく始めるWeb改善</div>
+    <h1>見積の前の<br><span class="accent">「何を伝える？」</span>を<br>なくす。</h1>
+    <p class="lead">工事の相談を受けるたび、必要な写真・場所・希望時期などを何度も確認していませんか。<strong>相談前に見てもらう1ページ</strong>とFAQを制作し、問い合わせの入口を整えます。</p>
+    <div class="hero-cta">
+      <a class="solidbtn" href="#plan">19,800円の制作内容を見る →</a>
+      <a class="outlinebtn" href="#sample">無料デモを試す ↗</a>
+    </div>
+    <div class="hero-meta"><span>買い切り料金</span><span>FAQ最大5件</span><span>修正1回</span></div>
+    <p class="small" style="margin-top:12px">※ 手間や売上の改善効果は保証しません。実際の運用に合わせた内容を確認して制作します。</p>
+  </div>
+  <div class="mock" aria-label="納品ページのイメージ">
+    <div class="mock-top"><span>完成ページのイメージ</span><span class="dots">● ● ●</span></div>
+    <div class="mock-inner">
+      <div class="mock-kicker">REFORM CONSULTATION / SAMPLE</div>
+      <h3>お見積り前に<br>3つだけ教えてください。</h3>
+      <p>ご相談をスムーズに進めるための確認事項です。</p>
+      <ul class="checklist">
+        <li>ご希望の工事内容</li>
+        <li>現場のおおまかな地域</li>
+        <li>工事希望時期・写真の有無</li>
+      </ul>
+      <span class="mock-link">お問い合わせ方法を確認 →</span>
+      <p style="text-align:center;margin:12px 0 0">※ 特定企業の実サイトではありません</p>
+    </div>
+  </div>
+</div></section>
+<div class="trust-band"><div class="container trust-grid">
+  <span>既存サイトを全面改修しない</span><span>初めての相談者が迷いにくい案内</span><span>修正範囲を最初に決める</span>
+</div></div>
+<section id="problem"><div class="container">
+  <div class="sectionhead"><div class="tag">WHY THIS PACK</div><h2>立派なサイトより、<br>まずは問い合わせの入口。</h2><p class="sub">新しいシステムを入れる前に、今あるWebサイトやメール・電話への導線をわかりやすく整理します。</p></div>
+  <div class="three">
+    <article class="feature"><div class="num">01 / お客様の迷い</div><h3>相談前に何が必要？</h3><p>相談時に用意してもらう情報を、順番と具体例でひと目で伝えるページを作ります。</p></article>
+    <article class="feature"><div class="num">02 / 同じ質問の繰り返し</div><h3>よくある質問を整える</h3><p>対象エリア・見積の流れ・写真の必要性など、会社が確認した内容を最大5件のFAQに。</p></article>
+    <article class="feature"><div class="num">03 / 連絡先が見つからない</div><h3>既存窓口へつなぐ</h3><p>いま使っている電話・メール・お問い合わせフォームへの案内を整理。予約システムの新設はしません。</p></article>
+  </div>
+</div></section>
+<section class="demo-section" id="sample"><div class="container">
+  <div class="sectionhead"><div class="tag">TRY THE DEMO</div><h2>完成イメージを、ここで体験。</h2><p class="sub">工事種別を選ぶと、問い合わせ前に案内できる文章の見本が切り替わります。これはサンプルであり、実際の納品内容は御社に確認して制作します。</p></div>
+  <div class="demo-grid">
+    <div class="demo-form"><h3>相談案内のサンプル作成</h3>
+      <label for="workType">扱っている工事</label>
+      <select id="workType"><option value="reform">水回り・内装リフォーム</option><option value="paint">外壁塗装</option><option value="exterior">外構・エクステリア</option></select>
+      <label for="entryRoute">現在の連絡手段</label>
+      <select id="entryRoute"><option value="form">お問い合わせフォーム</option><option value="phone">電話</option><option value="email">メール</option></select>
+      <p class="demo-note">氏名・連絡先の入力は不要です。選択内容は外部に送信せず、保存もしません。</p>
+    </div>
+    <div class="result" aria-live="polite"><div class="result-title">PREVIEW / 文面のたたき台</div>
+      <h3 id="previewTitle">お見積り前のご案内</h3>
+      <ol id="previewItems"><li>ご希望の工事内容</li><li>現場の地域</li><li>希望時期</li></ol>
+      <p id="previewRoute">ご相談はお問い合わせフォームから。</p>
+      <button type="button" class="outlinebtn" id="copySample">この案内文をコピー</button>
+      <p id="copyStatus" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</div></section>
+<section id="plan"><div class="container">
+  <div class="sectionhead"><div class="tag">ONE SIMPLE PLAN</div><h2>必要なものだけ、1つの料金に。</h2><p class="sub">まずは小規模事業者向けの定型パックです。大規模改修や複雑なシステム開発は対象外です。</p></div>
+  <div class="offer-grid">
+    <div class="deliverables"><h3>制作内容</h3><ul>
+      <li>スマホ対応のご相談案内ページ：1ページ</li>
+      <li>会社側に確認したFAQ：最大5問</li>
+      <li>既存の電話・メール・フォームへのリンク</li>
+      <li>文章・デザインの修正：1回</li>
+      <li>公開用HTML一式の納品</li>
+    </ul>
+    <p class="small" style="margin-top:17px">ご用意いただくもの：掲載する会社情報、工事の対応内容、連絡先、よくある質問への回答。写真を掲載する場合は利用許可がある素材のみ。</p>
+    </div>
+    <div class="price"><div class="name">初回の標準制作パック</div>
+      <div class="amount">19,800<span>円（税込）</span></div>
+      <p>買い切り。初回ヒアリングと掲載情報がそろった後、目安5営業日で初稿を提出します。公開作業や継続更新、ドメイン料金は別途相談です。</p>
+      <a class="solidbtn" href="mailto:kokisaijo262@gmail.com?subject=%E3%80%90%E5%88%B6%E4%BD%9C%E7%9B%B8%E8%AB%87%E3%80%91%E8%A6%8B%E7%A9%8D%E5%89%8DFAQ%E3%83%9A%E3%83%BC%E3%82%B8&body=%E4%BC%9A%E7%A4%BE%E5%90%8D%EF%BC%9A%0A%E5%85%AC%E5%BC%8F%E3%82%B5%E3%82%A4%E3%83%88URL%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89%EF%BC%9A%0A%E7%9B%B8%E8%AB%87%E3%81%97%E3%81%9F%E3%81%84%E5%9B%B0%E3%82%8A%E3%81%94%E3%81%A8%EF%BC%9A%0A">メールで制作を相談する ↗</a>
+      <div class="note">メール相談は無料・契約義務なし。正式な受注・決済は作業範囲と条件の合意後。決済画面はありません。</div>
+    </div>
+  </div>
+</div></section>
+<section id="flow"><div class="container">
+  <div class="sectionhead"><div class="tag">WORKFLOW</div><h2>制作までの4ステップ</h2></div>
+  <div class="steps">
+    <div class="step"><h3>メール相談</h3><p>現在の問い合わせ方法と困りごとを教えてください。必要性がない場合は制作を勧めません。</p></div>
+    <div class="step"><h3>内容・条件の合意</h3><p>対象範囲、掲載文、料金、納品方法、支払い方法を個別に確認します。</p></div>
+    <div class="step"><h3>初稿制作</h3><p>確認いただいた内容からページとFAQを制作。初稿の目安は5営業日です。</p></div>
+    <div class="step"><h3>修正・納品</h3><p>修正1回を反映し、HTML一式を納品。掲載・公開は確認後に進めます。</p></div>
+  </div>
+</div></section>
+<section class="faq-section" id="faq"><div class="container">
+  <div class="sectionhead"><div class="tag">QUESTIONS</div><h2>よくあるご質問</h2></div>
+  <details><summary>ホームページがすでにあっても依頼できますか？</summary><p>はい。既存サイトへの案内リンクとして使える独立ページを制作します。ただし既存サイト内の編集・設置は管理権限やサイト仕様の確認が必要で、標準料金に含みません。</p></details>
+  <details><summary>問い合わせ件数が増えることを保証しますか？</summary><p>いいえ。相談前の案内を整理することが目的です。売上・成約率・問い合わせ数の改善は保証しません。</p></details>
+  <details><summary>月額料金や解約料はありますか？</summary><p>標準パック自体は買い切りで、月額料金・解約料はありません。ドメイン・追加の運用や継続更新を依頼する場合は別の見積になります。</p></details>
+  <details><summary>写真や実績がなくても依頼できますか？</summary><p>可能です。まずは必要事項の案内とFAQに絞って制作します。架空の施工写真・口コミ・実績は掲載しません。</p></details>
+  <details><summary>支払いはどうなりますか？</summary><p>このサイトからの自動決済はありません。納品内容と契約条件を確認し、正式に合意した場合にのみ支払い方法をご案内します。</p></details>
+</div></section>
+<section class="bottom" id="contact"><div class="container">
+  <div class="eyebrow">まずは、困っているかどうかの確認から</div>
+  <h2 style="margin-top:18px">「同じ説明が多い」を<br>整理できるか、相談しませんか。</h2>
+  <p>お問い合わせ時は、会社名・公式サイト（任意）・困っている場面だけで大丈夫です。相談だけで料金は発生しません。</p>
+  <a class="solidbtn" href="mailto:kokisaijo262@gmail.com?subject=%E3%80%90%E5%88%B6%E4%BD%9C%E7%9B%B8%E8%AB%87%E3%80%91%E8%A6%8B%E7%A9%8D%E5%89%8DFAQ%E3%83%9A%E3%83%BC%E3%82%B8&body=%E4%BC%9A%E7%A4%BE%E5%90%8D%EF%BC%9A%0A%E5%85%AC%E5%BC%8F%E3%82%B5%E3%82%A4%E3%83%88URL%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89%EF%BC%9A%0A%E5%9B%B0%E3%81%A3%E3%81%A6%E3%81%84%E3%82%8B%E5%A0%B4%E9%9D%A2%EF%BC%9A%0A">無料で相談メールを作成 ↗</a>
+  <p style="font-size:12px;margin-top:14px">ボタンを押すとメールアプリが開きます。自動送信ではありません。</p>
+</div></section>
+</main>
+<footer><div class="container"><span>© MITUMORI MADO｜個人による小規模Web制作サービス</span><span>入力データの扱い：デモの選択内容はブラウザ上だけで処理し、送信・保存しません。メールで送る内容は相談対応のために利用します。</span></div></footer>
+<script>
+(function(){
+ "use strict";
+ var variants={
+  reform:{title:"水回り・内装工事のご相談前に",items:["ご希望の工事箇所（例：浴室・キッチン）","現場のおおまかな地域","ご希望の時期と現状が分かる写真の有無"]},
+  paint:{title:"外壁塗装のご相談前に",items:["建物の種類とおおまかな築年数","現場のおおまかな地域","気になる箇所と写真の有無"]},
+  exterior:{title:"外構工事のご相談前に",items:["ご希望の工事（例：駐車場・フェンス）","現場のおおまかな地域","希望時期・現場写真や図面の有無"]}
+ };
+ var routes={form:"お問い合わせフォーム",phone:"お電話",email:"メール"};
+ var type=document.getElementById("workType"),route=document.getElementById("entryRoute");
+ var title=document.getElementById("previewTitle"),items=document.getElementById("previewItems"),routeText=document.getElementById("previewRoute");
+ function lines(){var p=variants[type.value]||variants.reform;return p.title+"\n"+p.items.map(function(t,i){return (i+1)+". "+t}).join("\n")+"\nご相談は"+routes[route.value]+"から。";}
+ function update(){
+  var p=variants[type.value]||variants.reform;
+  title.textContent=p.title;
+  items.replaceChildren();
+  p.items.forEach(function(t){var li=document.createElement("li");li.textContent=t;items.appendChild(li)});
+  routeText.textContent="ご相談は"+routes[route.value]+"から。";
+  document.getElementById("copyStatus").textContent="";
+ }
+ type.addEventListener("change",update);route.addEventListener("change",update);
+ document.getElementById("copySample").addEventListener("click",function(){
+  var status=document.getElementById("copyStatus");
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+   navigator.clipboard.writeText(lines()).then(function(){status.textContent="コピーしました";},function(){status.textContent="コピーできませんでした。文章を選択してコピーしてください。";});
+  }else{status.textContent="この環境では自動コピーできません。表示された文章を選択してコピーしてください。";}
+ });
+ update();
+})();
+</script>
+</body>
+</html>
