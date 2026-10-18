@@ -1,0 +1,35 @@
+name: JavaScript security (CodeQL)
+
+on:
+  pull_request:
+    paths:
+      - 'site/**'
+      - 'index.html'
+      - 'scripts/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check local AI helper without installing models
+        run: |
+          node --check scripts/local-ai.mjs
+          node scripts/local-ai.mjs help
+      - name: Initialize GitHub CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: javascript-typescript
+          build-mode: none
+      - name: Analyze repository JavaScript
+        uses: github/codeql-action/analyze@v4
