@@ -1,0 +1,34 @@
+name: Website quality (Lighthouse CI)
+
+on:
+  pull_request:
+    paths:
+      - 'site/**'
+      - '.lighthouserc.json'
+      - '.github/workflows/oss-lighthouse.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install GoogleChrome Lighthouse CI
+        run: npm install --global @lhci/cli@0.15.1
+      - name: Audit actual Render static app assets in site/
+        run: lhci autorun
+      - name: Attach local-only HTML reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-lighthouse-reports
+          path: lighthouse-reports/
+          if-no-files-found: ignore
+          retention-days: 7
