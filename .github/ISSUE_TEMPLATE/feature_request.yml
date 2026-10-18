@@ -1,0 +1,26 @@
+name: 改善提案（価値検証）
+description: 作る前に利用者と成果指標を決める
+title: "[Improvement] "
+labels: []
+body:
+  - type: textarea
+    id: user_problem
+    attributes:
+      label: 誰のどんな問題を解決するか
+      placeholder: "例: 店舗のSNS担当者が今日の投稿を決められない"
+    validations:
+      required: true
+  - type: textarea
+    id: smallest_change
+    attributes:
+      label: 最小の改善と完成条件
+    validations:
+      required: true
+  - type: textarea
+    id: measure
+    attributes:
+      label: 成果の確認方法
+      description: 推定の売上・架空の利用数は書かない
+      placeholder: "実利用の件数、具体的な反応、検証結果"
+    validations:
+      required: true

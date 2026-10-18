@@ -1,0 +1,14 @@
+{
+  "name": "Action OS | GitHub browser dev",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "customizations": {
+    "vscode": {
+      "extensions": ["github.copilot", "github.copilot-chat"]
+    }
+  },
+  "postCreateCommand": "node --version && git --version",
+  "forwardPorts": [4173],
+  "portsAttributes": {
+    "4173": { "label": "Local preview", "onAutoForward": "notify" }
+  }
+}

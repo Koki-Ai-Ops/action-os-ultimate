@@ -1,0 +1,25 @@
+name: 不具合報告
+description: 再現方法と期待した結果をまとめる
+title: "[Bug] "
+labels: []
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現する手順
+      description: 個人情報やAPIキーは書かない
+      placeholder: "1. 画面を開く\n2. ボタンを押す\n3. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待した動作と実際の動作
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 端末・ブラウザ・テスト結果（任意）
+    validations:
+      required: false
