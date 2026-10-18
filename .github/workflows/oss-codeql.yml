@@ -19,6 +19,13 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check local AI helper without installing models
+        run: |
+          node --check scripts/local-ai.mjs
+          node scripts/local-ai.mjs help
       - name: Initialize GitHub CodeQL
         uses: github/codeql-action/init@v4
         with:
