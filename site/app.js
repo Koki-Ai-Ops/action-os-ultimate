@@ -161,6 +161,7 @@ function renderHistory() {
   list.replaceChildren();
   $('clear-history').hidden = state.history.length === 0 && !state.current;
   $('export-history').hidden = state.history.length === 0 && !state.current;
+  $('export-csv').hidden = state.history.length === 0;
   if (!state.history.length) {
     list.append(make('p', 'empty-state', 'まだ記録はありません。最初のメモを作ってみましょう。'));
     return;
@@ -268,6 +269,40 @@ $('export-history').addEventListener('click', () => {
     feedback.textContent = '保存先にファイルがあることを確認してください。';
   } catch {
     feedback.textContent = 'ファイルを作成できませんでした。端末の設定をご確認ください。';
+  }
+});
+
+/* Human-triggered CSV of decided history only (not the pending note).
+ * Quote fields and neutralize common spreadsheet formula prefixes.
+ */
+function safeCsvCell(value) {
+  let string = String(value ?? '');
+  if (/^[\s\u200b\ufeff]*[=+\-@]/u.test(string)) string = "'" + string;
+  return '"' + string.replace(/"/g, '""') + '"';
+}
+$('export-csv').addEventListener('click', () => {
+  const feedback = $('export-feedback');
+  if (!state.history.length) {
+    feedback.textContent = 'CSVに保存する判断履歴がありません。';
+    return;
+  }
+  try {
+    const fields = ['at', 'industry', 'goal', 'storeName', 'status', 'action', 'draft', 'measure', 'note'];
+    const header = ['日時', '業種', '目的', '店名', '判断', '行動', '下書き', '確認項目', 'メモ'];
+    const lines = [header, ...state.history.map(item => fields.map(field => item[field] ?? ''))];
+    const csv = '\uFEFF' + lines.map(row => row.map(safeCsvCell).join(',')).join('\r\n');
+    const file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'shukyaku-seiricho-history-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    feedback.textContent = 'CSVには判断済みの履歴だけが含まれます。保存先をご確認ください。';
+  } catch {
+    feedback.textContent = 'CSVを作成できませんでした。端末の設定をご確認ください。';
   }
 });
 
