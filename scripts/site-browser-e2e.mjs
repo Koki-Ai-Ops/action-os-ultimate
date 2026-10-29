@@ -44,6 +44,7 @@ try {
     name: 'malformed.json', mimeType: 'application/json',
     buffer: Buffer.from(JSON.stringify(malformed))
   });
+  await page.waitForFunction(() => document.querySelector('#export-feedback').textContent.includes('復元できません'));
   assert.match(await page.locator('#export-feedback').textContent(), /復元できません/);
   assert.deepEqual(await page.evaluate(() => JSON.parse(localStorage.getItem('shukyaku-seiricho-v1'))), before);
 
@@ -53,6 +54,7 @@ try {
     name: 'backup.json', mimeType: 'application/json',
     buffer: Buffer.from(JSON.stringify(data))
   });
+  await page.waitForFunction(() => document.querySelector('#export-feedback').textContent.includes('中止しました'));
   assert.match(await page.locator('#export-feedback').textContent(), /中止しました/);
   assert.deepEqual(await page.evaluate(() => JSON.parse(localStorage.getItem('shukyaku-seiricho-v1'))), before);
 
