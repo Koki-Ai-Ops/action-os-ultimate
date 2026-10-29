@@ -74,6 +74,18 @@ try {
 
   await page.reload({ waitUntil: 'domcontentloaded' });
   assert.equal(await page.locator('#history-list article').count(), 1, 'history survives reload');
+  // CSV is intentionally one-way and must not treat user text as formulas.
+  await page.locator('#draft-text').fill('=1+1');
+  await page.locator('#use-draft').click();
+  const csvDownloading = page.waitForEvent('download');
+  await page.locator('#export-csv').click();
+  const csvFile = await csvDownloading;
+  assert.match(csvFile.suggestedFilename(), /^shukyaku-seiricho-history-\d{4}-\d{2}-\d{2}\.csv$/);
+  const csvText = await readFile(await csvFile.path(), 'utf8');
+  assert.match(csvText, /^\uFEFF"日時","業種"/, 'CSV must be Japanese Excel-compatible');
+  assert.match(csvText, /架空カフェE2E/, 'CSV must contain stored history');
+  assert.match(csvText, /"'=1\+1"/, 'CSV must neutralize spreadsheet formula injection');
+
   assert.deepEqual(errors, [], 'no runtime errors');
 
   console.log('Public 集客整理帳 export E2E passed: empty state, edited data, JSON file, persistence, mobile viewport.');
