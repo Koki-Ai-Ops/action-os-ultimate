@@ -160,6 +160,7 @@ function renderHistory() {
   const list = $('history-list');
   list.replaceChildren();
   $('clear-history').hidden = state.history.length === 0 && !state.current;
+  $('export-history').hidden = state.history.length === 0 && !state.current;
   if (!state.history.length) {
     list.append(make('p', 'empty-state', 'まだ記録はありません。最初のメモを作ってみましょう。'));
     return;
@@ -240,6 +241,35 @@ function decide(status) {
 }
 $('use-draft').addEventListener('click', () => decide('used'));
 $('pass-draft').addEventListener('click', () => decide('passed'));
+$('export-history').addEventListener('click', () => {
+  const feedback = $('export-feedback');
+  if (!state.current && state.history.length === 0) {
+    feedback.textContent = '保存できる記録がありません。';
+    return;
+  }
+  try {
+    // Explicit user action only. No external network or telemetry.
+    const backup = {
+      format: 'shukyaku-seiricho-backup',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      current: state.current,
+      history: state.history
+    };
+    const file = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'shukyaku-seiricho-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    feedback.textContent = '保存先にファイルがあることを確認してください。';
+  } catch {
+    feedback.textContent = 'ファイルを作成できませんでした。端末の設定をご確認ください。';
+  }
+});
 $('clear-history').addEventListener('click', () => {
   if (!window.confirm('この端末にある今日のメモと判断履歴をすべて消しますか？')) return;
   state = { current: null, history: [] };
