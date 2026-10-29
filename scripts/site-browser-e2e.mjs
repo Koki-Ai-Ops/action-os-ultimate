@@ -38,6 +38,40 @@ try {
   const after = await page.evaluate(() => JSON.parse(localStorage.getItem('shukyaku-seiricho-v1')));
   assert.deepEqual(after, before, 'export must never alter data');
 
+  // Reject a syntactically valid but unsafe backup without mutating user data.
+  const malformed = { ...data, history: [{ ...data.history[0], status: 'unexpected' }] };
+  await page.locator('#import-file').setInputFiles({
+    name: 'malformed.json', mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(malformed))
+  });
+  assert.match(await page.locator('#export-feedback').textContent(), /復元できません/);
+  assert.deepEqual(await page.evaluate(() => JSON.parse(localStorage.getItem('shukyaku-seiricho-v1'))), before);
+
+  // Cancelled replacement must not modify current data.
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.locator('#import-file').setInputFiles({
+    name: 'backup.json', mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(data))
+  });
+  assert.match(await page.locator('#export-feedback').textContent(), /中止しました/);
+  assert.deepEqual(await page.evaluate(() => JSON.parse(localStorage.getItem('shukyaku-seiricho-v1'))), before);
+
+  // Recover deleted browser-local data from the downloaded JSON.
+  await page.evaluate(() => localStorage.removeItem('shukyaku-seiricho-v1'));
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  assert.equal(await page.locator('#history-list article').count(), 0);
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#import-file').setInputFiles({
+    name: 'backup.json', mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(data))
+  });
+  await page.waitForFunction(() => {
+    const saved = JSON.parse(localStorage.getItem('shukyaku-seiricho-v1') || '{}');
+    return saved.history && saved.history.length === 1;
+  });
+  assert.deepEqual(await page.evaluate(() => JSON.parse(localStorage.getItem('shukyaku-seiricho-v1'))), before);
+  assert.equal(await page.locator('#history-list article').count(), 1);
+
   await page.reload({ waitUntil: 'domcontentloaded' });
   assert.equal(await page.locator('#history-list article').count(), 1, 'history survives reload');
   assert.deepEqual(errors, [], 'no runtime errors');
