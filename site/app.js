@@ -110,10 +110,13 @@ function readState() {
 let state = readState();
 
 function persist() {
+  const warning = $('storage-warning');
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
+    warning.hidden = true;
     return true;
   } catch {
+    warning.hidden = false;
     return false;
   }
 }
