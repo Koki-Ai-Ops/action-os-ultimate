@@ -1,0 +1,19 @@
+{
+  "name": "Daily Workbench — 今日を進める",
+  "short_name": "Daily Workbench",
+  "description": "登録不要・端末保存の毎日ワークベンチ",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#101e3b",
+  "background_color": "#f6f7fa",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
