@@ -110,10 +110,13 @@ function readState() {
 let state = readState();
 
 function persist() {
+  const warning = $('storage-warning');
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
+    warning.hidden = true;
     return true;
   } catch {
+    warning.hidden = false;
     return false;
   }
 }
@@ -160,6 +163,8 @@ function renderHistory() {
   const list = $('history-list');
   list.replaceChildren();
   $('clear-history').hidden = state.history.length === 0 && !state.current;
+  $('export-history').hidden = state.history.length === 0 && !state.current;
+  $('export-csv').hidden = state.history.length === 0;
   if (!state.history.length) {
     list.append(make('p', 'empty-state', 'まだ記録はありません。最初のメモを作ってみましょう。'));
     return;
@@ -240,6 +245,144 @@ function decide(status) {
 }
 $('use-draft').addEventListener('click', () => decide('used'));
 $('pass-draft').addEventListener('click', () => decide('passed'));
+$('export-history').addEventListener('click', () => {
+  const feedback = $('export-feedback');
+  if (!state.current && state.history.length === 0) {
+    feedback.textContent = '保存できる記録がありません。';
+    return;
+  }
+  try {
+    // Explicit user action only. No external network or telemetry.
+    const backup = {
+      format: 'shukyaku-seiricho-backup',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      current: state.current,
+      history: state.history
+    };
+    const file = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'shukyaku-seiricho-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    feedback.textContent = '保存先にファイルがあることを確認してください。';
+  } catch {
+    feedback.textContent = 'ファイルを作成できませんでした。端末の設定をご確認ください。';
+  }
+});
+
+/* Human-triggered CSV of decided history only (not the pending note).
+ * Quote fields and neutralize common spreadsheet formula prefixes.
+ */
+function safeCsvCell(value) {
+  let string = String(value ?? '');
+  if (/^[\s\u200b\ufeff]*[=+\-@]/u.test(string)) string = "'" + string;
+  return '"' + string.replace(/"/g, '""') + '"';
+}
+$('export-csv').addEventListener('click', () => {
+  const feedback = $('export-feedback');
+  if (!state.history.length) {
+    feedback.textContent = 'CSVに保存する判断履歴がありません。';
+    return;
+  }
+  try {
+    const fields = ['at', 'industry', 'goal', 'storeName', 'status', 'action', 'draft', 'measure', 'note'];
+    const header = ['日時', '業種', '目的', '店名', '判断', '行動', '下書き', '確認項目', 'メモ'];
+    const lines = [header, ...state.history.map(item => fields.map(field => item[field] ?? ''))];
+    const csv = '\uFEFF' + lines.map(row => row.map(safeCsvCell).join(',')).join('\r\n');
+    const file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'shukyaku-seiricho-history-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    feedback.textContent = 'CSVには判断済みの履歴だけが含まれます。保存先をご確認ください。';
+  } catch {
+    feedback.textContent = 'CSVを作成できませんでした。端末の設定をご確認ください。';
+  }
+});
+
+/* Deliberate, local-only recovery. Reject malformed data before any write.
+ * Only known fields are restored; arbitrary JSON keys are never executed.
+ */
+function validatedBackupNote(value, allowPending) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('invalid note');
+  const text = (key, max, fallback) => {
+    const val = value[key] === undefined && fallback !== undefined ? fallback : value[key];
+    if (typeof val !== 'string' || val.length > max) throw new Error('invalid ' + key);
+    return val;
+  };
+  const id = text('id', 100);
+  const at = text('at', 50);
+  const industry = text('industry', 30);
+  const goal = text('goal', 30);
+  if (!id || !at || Number.isNaN(Date.parse(at))) throw new Error('invalid record id/date');
+  if (!Object.prototype.hasOwnProperty.call(PLANS, industry) ||
+      !Object.prototype.hasOwnProperty.call(PLANS[industry], goal)) throw new Error('invalid category');
+  const status = text('status', 10);
+  if (!['used', 'passed', ...(allowPending ? ['pending'] : [])].includes(status)) {
+    throw new Error('invalid decision');
+  }
+  return {
+    id, at, industry, goal,
+    storeName: text('storeName', 60, ''),
+    action: text('action', 500),
+    draft: text('draft', 3000),
+    measure: text('measure', 500),
+    note: text('note', 500, ''),
+    status
+  };
+}
+function validateBackupData(data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data) ||
+      data.format !== 'shukyaku-seiricho-backup' || data.version !== 1 ||
+      !Array.isArray(data.history) || data.history.length > 20) {
+    throw new Error('unsupported backup');
+  }
+  const current = data.current == null ? null : validatedBackupNote(data.current, true);
+  const history = data.history.map(note => validatedBackupNote(note, false));
+  if (new Set(history.map(item => item.id)).size !== history.length) throw new Error('duplicate notes');
+  return { current, history };
+}
+$('import-history').addEventListener('click', () => $('import-file').click());
+$('import-file').addEventListener('change', async () => {
+  const picker = $('import-file');
+  const file = picker.files && picker.files[0];
+  picker.value = '';
+  if (!file) return;
+  const feedback = $('export-feedback');
+  let restored;
+  try {
+    if (file.size > 500000) throw new Error('backup too large');
+    restored = validateBackupData(JSON.parse(await file.text()));
+  } catch {
+    feedback.textContent = 'このJSONは復元できません。正しいバックアップ形式か確認してください。現在の記録は変更していません。';
+    return;
+  }
+  if (!window.confirm('この端末の現在のメモと履歴をバックアップの内容に置き換えます。元の記録を保存してから続けてください。復元しますか？')) {
+    feedback.textContent = '復元を中止しました。現在の記録は変更していません。';
+    return;
+  }
+  try {
+    // Commit to storage first. If blocked/full, keep in-memory user state intact.
+    localStorage.setItem(KEY, JSON.stringify(restored));
+    state = restored;
+    $('note-form').reset();
+    renderCurrent(false);
+    renderHistory();
+    feedback.textContent = 'この端末に復元しました。ページを再読み込みして記録を確認してください。';
+  } catch {
+    feedback.textContent = '端末への保存に失敗しました。現在の記録は変更していません。';
+  }
+});
+
 $('clear-history').addEventListener('click', () => {
   if (!window.confirm('この端末にある今日のメモと判断履歴をすべて消しますか？')) return;
   state = { current: null, history: [] };
