@@ -49,7 +49,7 @@ try{
  const before=await page.evaluate(()=>JSON.parse(localStorage.getItem('daily_workbench_v1')));
  assert.equal(before.days[Object.keys(before.days)[0]].note,'保存を再開した');
  await page.locator('#import-file').setInputFiles({name:'wrong.json',mimeType:'application/json',buffer:Buffer.from('{"version":1,"days":{"2026-10-30":{"tasks":"oops"}},"links":{}}')});
- assert.match(await page.locator('#app-message').innerText(),/復元できません/);
+ await page.waitForFunction(() => document.getElementById('app-message').textContent.includes('復元できません'));
  const afterInvalid=await page.evaluate(()=>JSON.parse(localStorage.getItem('daily_workbench_v1')));
  assert.deepEqual(afterInvalid,before);
 
