@@ -64,6 +64,7 @@
             <div class="field"><label for="goal">今日の目的 <span>必須</span></label><select id="goal" name="goal" required><option value="新規客">初めてのお客さまを増やす</option><option value="リピート">また来てもらう</option><option value="SNS反応">投稿への反応を増やす</option><option value="予約・申込">予約・お問い合わせにつなげる</option></select></div>
             <div class="field"><label for="store-name">お店の名前 <span class="optional">任意</span></label><input id="store-name" name="storeName" type="text" maxlength="60" autocomplete="organization" placeholder="例：喫茶みどり"><p class="field-help">名前は入れなくても大丈夫です。</p></div>
             <button class="button button-primary submit-button" type="submit">今日のメモをつくる <span aria-hidden="true">→</span></button>
+            <p id="storage-warning" class="field-help" role="alert" hidden>端末への保存に失敗しました。このページを閉じる前に、記録欄のJSON保存を使ってください。再読み込みすると変更が失われる可能性があります。</p>
             <p class="form-fine">入力内容はこの端末内に保存します。会員登録や外部送信はありません。</p>
           </form>
           <aside class="work-aside"><div class="aside-index">A NOTE FOR TODAY</div><p class="aside-quote">「何を投稿しよう」から、<br>「これを投稿しよう」へ。</p><div class="aside-divider"></div><p>結果はそのまま公開する完成原稿ではなく、書き換えて使うための下書きです。</p><span class="aside-footer">EST. 2026 / SHUKYAKU NOTE</span></aside>
