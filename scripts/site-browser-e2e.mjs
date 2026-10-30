@@ -88,6 +88,18 @@ try {
   assert.match(csvText, /架空カフェE2E/, 'CSV must contain stored history');
   assert.match(csvText, /"'=1\+1"/, 'CSV must neutralize spreadsheet formula injection');
 
+  // Simulated denied localStorage writes must never silently look like persisted data.
+  await page.evaluate(() => {
+    window.__originalSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = () => { throw new Error('storage denied for test'); };
+  });
+  await page.locator('#user-note').fill('保存失敗テスト');
+  assert.equal(await page.locator('#storage-warning').isVisible(), true, 'failed writes must be visible');
+  await page.evaluate(() => { Storage.prototype.setItem = window.__originalSetItem; });
+  await page.locator('#user-note').fill('復帰後の保存');
+  assert.equal(await page.locator('#storage-warning').isHidden(), true, 'successful writes clear warning');
+  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('shukyaku-seiricho-v1')).current.note), '復帰後の保存');
+
   assert.deepEqual(errors, [], 'no runtime errors');
 
   console.log('Public 集客整理帳 export E2E passed: empty state, edited data, JSON file, persistence, mobile viewport.');
