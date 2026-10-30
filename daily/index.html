@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101e3b">
+<meta name="description" content="今日やること・学習・制作ツールを1画面に。登録不要、端末だけに保存する日常ワークベンチ。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; form-action 'none'">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./style.css">
+<title>Daily Workbench | 今日を進める</title>
+</head>
+<body>
+<a href="#main" class="skip">本文へ移動</a>
+<header class="topbar">
+  <a class="wordmark" href="./" aria-label="Daily Workbenchホーム"><span class="logo" aria-hidden="true">D.</span> DAILY WORKBENCH</a>
+  <span class="tag">PERSONAL / LOCAL FIRST</span>
+</header>
+<main id="main" class="shell">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-text">
+      <p class="eyebrow">DO LESS. FINISH MORE.</p>
+      <h1 id="hero-title">今日を、<br><em>前に進める。</em></h1>
+      <p>目の前の3つ、30分の学習、必要な道具。毎日ここを開くだけ。</p>
+      <span id="today-date" class="date-chip"></span>
+    </div>
+    <div class="hero-progress">
+      <p>今日の進捗</p><strong id="progress-count">0 / 0</strong>
+      <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
+      <small>結果はこのブラウザにのみ保存</small>
+    </div>
+  </section>
+
+  <div id="storage-warning" class="notice error" role="alert" hidden>この端末に保存できません。ページを閉じる前に「JSONでバックアップ」を使ってください。</div>
+  <div id="app-message" role="status" aria-live="polite" class="status"></div>
+  <div class="main-grid">
+    <section class="panel priorities" aria-labelledby="priority-title">
+      <div class="section-head"><div><p class="eyebrow">01 / TODAY</p><h2 id="priority-title">今日やることを3つ</h2></div><span class="mini-badge">最重要を先に</span></div>
+      <div class="task-entry"><input id="task-0-check" type="checkbox" aria-label="最重要タスク完了"><label for="task-0" class="task-order">01 <strong>最重要</strong></label><input id="task-0" class="task-input" maxlength="160" autocomplete="off" placeholder="今日、必ず終わらせたいこと"></div>
+      <div class="task-entry"><input id="task-1-check" type="checkbox" aria-label="2つ目のタスク完了"><label for="task-1" class="task-order">02</label><input id="task-1" class="task-input" maxlength="160" autocomplete="off" placeholder="2つ目に進めること"></div>
+      <div class="task-entry"><input id="task-2-check" type="checkbox" aria-label="3つ目のタスク完了"><label for="task-2" class="task-order">03</label><input id="task-2" class="task-input" maxlength="160" autocomplete="off" placeholder="時間があれば進めること"></div>
+      <label for="day-note" class="subhead">今日の記録・気づき</label>
+      <textarea id="day-note" maxlength="1500" rows="3" placeholder="実行したこと、学んだこと、次に改善すること"></textarea>
+      <p class="hint">入力とチェックは自動で保存されます。日付が変わると新しい3項目になります。</p>
+    </section>
+
+    <section class="panel side" aria-labelledby="focus-title">
+      <div class="section-head"><div><p class="eyebrow">02 / FOCUS</p><h2 id="focus-title">25分集中</h2></div></div>
+      <div id="timer-display" class="timer" role="timer" aria-live="off">25:00</div>
+      <div class="timer-controls"><button id="timer-toggle" class="button primary" type="button">スタート</button><button id="timer-reset" class="button outline" type="button">リセット</button></div>
+      <p id="timer-message" class="hint" role="status">通知の許可や登録なしで使えます。</p>
+      <div class="learning">
+        <p class="eyebrow">03 / LEARN</p><h2>今日の30分学習</h2>
+        <p id="learning-title" class="learn-title"></p>
+        <p id="learning-detail" class="hint"></p>
+        <a id="learning-link" target="_blank" rel="noopener noreferrer" class="text-link">教材を開く</a>
+        <label class="study-done"><input id="study-done" type="checkbox"> 今日の学習を完了した</label>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel shortcut-panel" aria-labelledby="shortcut-title">
+    <div class="section-head"><div><p class="eyebrow">04 / MY SHORTCUTS</p><h2 id="shortcut-title">自分の仕事場へ直行</h2></div><span class="mini-badge">端末内に設定保存</span></div>
+    <div class="shortcuts">
+      <div><label for="os-url">Google経営OSのURL</label><div class="url-row"><input id="os-url" type="url" maxlength="500" placeholder="https://docs.google.com/spreadsheets/d/..."><button id="save-os" class="button outline" type="button">登録</button></div><a id="open-os" href="https://drive.google.com/drive/u/0/my-drive" target="_blank" rel="noopener noreferrer" class="small-link">Google Driveを開く（未登録）</a></div>
+      <div><label for="pr-url">GitHubのPR一覧・リポジトリURL</label><div class="url-row"><input id="pr-url" type="url" maxlength="500" placeholder="https://github.com/.../pulls"><button id="save-pr" class="button outline" type="button">登録</button></div><a id="open-pr" href="https://github.com/pulls" target="_blank" rel="noopener noreferrer" class="small-link">自分のPR一覧を開く（未登録）</a></div>
+    </div>
+    <p class="hint">リンクの登録はこの端末だけ。個人情報、トークン、パスワードは入力しないでください。</p>
+  </section>
+
+  <section aria-labelledby="tools-title" class="tool-section">
+    <div class="section-head"><div><p class="eyebrow">05 / TOOLKIT</p><h2 id="tools-title">毎日の道具箱</h2></div><span class="mini-badge">公式サイトを開く</span></div>
+    <div class="tools-grid">
+      <article class="tool"><span class="tool-number">01</span><h3>Ollama</h3><p>手元のPCでAIを比較。日報分析などは架空データで実験。</p><a href="https://ollama.com/download" target="_blank" rel="noopener noreferrer">PCで使う方法を見る</a><small>利用にはPC側のセットアップが必要</small></article>
+      <article class="tool"><span class="tool-number">02</span><h3>GitHub / Copilot</h3><p>PRの差分、失敗したCI、修正箇所を確認する。</p><a href="https://github.com/pulls" target="_blank" rel="noopener noreferrer">PR一覧を開く</a><small>Copilotの利用にはGitHubでの設定が必要</small></article>
+      <article class="tool"><span class="tool-number">03</span><h3>Excalidraw</h3><p>事業や作業の流れを手書き感覚で図解する。</p><a href="https://excalidraw.com/" target="_blank" rel="noopener noreferrer">ホワイトボードを開く</a><a class="secondary-tool-link" href="./google-os-flow.excalidraw" download="google-os-flow.excalidraw">経営OSの編集用テンプレートを保存</a><small>Excalidrawで「開く」からテンプレートを読み込む</small></article>
+      <article class="tool"><span class="tool-number">04</span><h3>Developer Roadmap</h3><p>今日学ぶ技術を1つだけ決めて実践する。</p><a href="https://roadmap.sh/" target="_blank" rel="noopener noreferrer">ロードマップを開く</a><small>学習欄のテーマは日替わり</small></article>
+      <article class="tool"><span class="tool-number">05</span><h3>System Design Primer</h3><p>バックアップ・DB・拡張性の設計を調べる。</p><a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener noreferrer">設計教材を開く</a><small>実際の負荷が生じてから実装判断</small></article>
+      <article class="tool"><span class="tool-number">06</span><h3>Public APIs</h3><p>新機能に使えるAPIを探し、料金・商用利用条件を確認。</p><a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener noreferrer">API一覧を探す</a><small>無料・商用可は個別に確認</small></article>
+      <article class="tool"><span class="tool-number">07</span><h3>Stable Diffusion WebUI</h3><p>画像生成をPCで試し、SNS素材を比較する。</p><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank" rel="noopener noreferrer">導入手順を見る</a><small>PC性能・モデルの利用条件を確認</small></article>
+    </div>
+  </section>
+
+  <section class="panel backup-panel" aria-labelledby="backup-title">
+    <div><p class="eyebrow">06 / BACKUP</p><h2 id="backup-title">データを自分で守る</h2><p>この端末だけに保存され、別端末への同期はありません。定期的に保存ファイルを保管してください。</p></div>
+    <div class="backup-buttons"><button id="export-data" class="button primary" type="button">JSONでバックアップ</button><label for="import-file" class="button outline clickable">バックアップを復元</label><input id="import-file" type="file" accept=".json,application/json" hidden><button id="clear-data" class="button danger-outline" type="button">全記録を消去</button></div>
+  </section>
+</main>
+<footer class="footer"><span>DAILY WORKBENCH · 端末内保存 · 登録不要</span><span>自動投稿・AI課金・外部データ送信は行いません。</span></footer>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

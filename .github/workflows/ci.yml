@@ -40,4 +40,5 @@ jobs:
           done
           curl -fsS http://127.0.0.1:4173/ >/dev/null
           node scripts/browser-e2e.mjs
+          node scripts/daily-browser-e2e.mjs
           node scripts/site-browser-e2e.mjs
