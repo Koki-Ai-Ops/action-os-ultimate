@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6f5ef">
+  <meta name="description" content="小さなお店の問い合わせ返信と対応状況を整理する無料ツール。定型文の作成、コピー、対応件数の記録を端末内で完結。">
+  <title>問い合わせ対応ノート｜集客整理帳</title>
+  <style>
+    :root{--paper:#f6f5ef;--white:#fff;--forest:#194d3d;--ink:#232f29;--muted:#617166;--line:#d7ddd4;--soft:#eaf0e7;--accent:#ddedcb}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.7}
+    button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}.shell{width:min(1050px,calc(100% - 40px));margin:auto}
+    .top{background:var(--white);border-bottom:1px solid var(--line)}.topinner{min-height:79px;display:flex;justify-content:space-between;gap:18px;align-items:center}
+    .brand{font-size:19px;letter-spacing:.08em;text-decoration:none;font-weight:800}.brand small{display:block;font-size:10px;font-weight:400;color:var(--muted);letter-spacing:.03em}
+    .top a.back{font-size:12px;color:var(--forest);text-decoration:none;border-bottom:1px solid}
+    .hero{padding:70px 0 50px;display:grid;grid-template-columns:1.3fr .7fr;gap:36px;align-items:center}.eyebrow,.kicker{font:700 11px Arial,sans-serif;color:var(--forest);letter-spacing:.17em}
+    h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(34px,5.1vw,58px);line-height:1.4;letter-spacing:-.045em;margin:15px 0 16px}h1 em{font-style:normal;color:var(--forest)}
+    .lead{font-size:14px;max-width:570px;color:var(--muted)}.mini{background:var(--forest);color:white;padding:28px 26px}.mini p{margin:0;font-size:12px;line-height:2}.mini strong{font-size:19px}
+    .workspace{background:#e9eee6;padding:52px 0 65px}.sectionhead{margin:0 0 27px}.sectionhead h2{font-family:"Yu Mincho",serif;font-size:30px;margin:7px 0}
+    .layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.panel{background:var(--white);padding:29px;border:1px solid var(--line);min-width:0}
+    .panel h3{margin:0 0 19px;font-size:17px}.field{margin:0 0 18px}label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.help{color:var(--muted);font-size:11px;margin:7px 0}
+    select,input,textarea{border:1px solid #becbbf;background:#fff;color:var(--ink);width:100%;padding:11px 12px;border-radius:3px;font-size:14px}textarea{min-height:85px;resize:vertical}
+    input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #d4b653;outline-offset:2px}
+    .buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{border:1px solid var(--forest);background:var(--forest);color:white;padding:11px 17px;border-radius:3px;font-size:13px;font-weight:700}.btn.secondary{background:white;color:var(--forest)}.btn:disabled{opacity:.4;cursor:not-allowed}
+    .checkrow{display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.7;font-weight:500}.checkrow input{width:17px;flex:none;margin-top:3px}
+    .result{white-space:pre-wrap;font-size:14px;min-height:215px;background:#f7f9f5;border:1px solid var(--line);padding:20px;line-height:1.95;overflow-wrap:anywhere}
+    .todo{border-left:3px solid var(--forest);padding:11px 14px;background:var(--soft);font-size:12px;margin-top:13px}
+    .status{font-size:12px;color:var(--forest);min-height:20px;margin-top:8px}.notice{font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:13px;margin-top:20px}
+    .history{padding:55px 0 80px}.historyhead{display:flex;gap:15px;justify-content:space-between;align-items:center}.stats{font-weight:800;font-size:16px;color:var(--forest)}
+    .rows{margin-top:15px;border-top:1px solid var(--forest)}.item{border-bottom:1px solid var(--line);padding:15px 0;display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px}.item small{display:block;color:var(--muted);font-size:11px}.item strong{font-size:14px}.item .actions{display:flex;gap:8px;align-items:center}.tiny{background:white;border:1px solid #b8c9ba;color:var(--forest);padding:6px 8px;font-size:11px;border-radius:3px}.empty{color:var(--muted);font-size:13px}
+    footer{background:var(--forest);color:#d9e7da;padding:35px 0;font-size:11px}
+    @media(max-width:740px){.hero,.layout{grid-template-columns:1fr}.hero{padding:42px 0 30px}.mini{display:none}.panel{padding:21px}.historyhead{align-items:start;flex-direction:column}.item{grid-template-columns:1fr}.item .actions{justify-content:flex-start}.shell{width:min(100% - 30px,700px)}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+<header class="top"><div class="shell topinner"><a class="brand" href="./index.html">集客整理帳<small>SMALL SHOP JOURNAL</small></a><a class="back" href="./index.html">投稿ツールへ戻る ↗</a></div></header>
+<main>
+  <section class="hero shell"><div><p class="eyebrow">SMALL SHOP / INQUIRY NOTE 002</p><h1>問い合わせ対応を、<br><em>迷わず一件ずつ。</em></h1><p class="lead">予約・料金・営業時間・在庫などの返信案を作り、対応状況を整理。外部AI・ログイン・課金は不要です。お客様への送信は、内容を確認してから手動で行います。</p></div><div class="mini"><p>01　内容を選ぶ<br>02　案内文を確認する<br>03　文章をコピーする<br>04　対応状況だけ記録する</p><hr style="border:0;border-top:1px solid #7d9a88;margin:24px 0"><strong>1件ずつ、確実に。</strong></div></section>
+  <section class="workspace"><div class="shell"><div class="sectionhead"><p class="kicker">01 / REPLY</p><h2>返信のたたき台を作る</h2></div>
+    <div class="layout">
+      <form id="reply-form" class="panel">
+        <h3>問い合わせの内容</h3>
+        <div class="field"><label for="kind">問い合わせの種類</label><select id="kind"><option value="booking">予約・日時</option><option value="pricing">料金・メニュー</option><option value="hours">営業時間・休業日</option><option value="stock">商品在庫・取り置き</option><option value="cancel">変更・キャンセル</option><option value="other">その他の質問</option></select></div>
+        <div class="field"><label for="tone">文章の雰囲気</label><select id="tone"><option value="polite">丁寧・落ち着いた文章</option><option value="friendly">やわらかく親しみやすい文章</option></select></div>
+        <div class="field"><label for="shop">お店の名前（任意）</label><input id="shop" maxlength="60" placeholder="例：喫茶みどり" autocomplete="organization"></div>
+        <div class="field"><label for="facts">確認済みの案内情報（任意）</label><textarea id="facts" maxlength="400" placeholder="例：11月3日（火）は休業。11月4日（水）から営業"></textarea><p class="help">氏名・電話番号など、お客様の個人情報は入力しないでください。</p></div>
+        <label class="checkrow"><input id="confirmed" type="checkbox"><span>上記の案内情報は、最新の店舗情報と照合済みです。確認していない情報は返信文に使いません。</span></label>
+        <div class="buttons"><button class="btn" type="submit">返信案を作成 →</button><button class="btn secondary" type="button" id="clear-inputs">入力をリセット</button></div>
+        <p class="notice">入力した案内情報はサーバーに送信せず、返信案の作成だけに使います。外部の生成AIは使わず、種類別の定型文を組み立てます。</p>
+      </form>
+      <div class="panel" aria-live="polite"><h3>返信の下書き <small style="font-size:11px;color:#617166;font-weight:normal">編集できます</small></h3><textarea id="output" class="result" aria-label="生成した返信文" spellcheck="true">左の内容を選んで「返信案を作成」を押してください。</textarea><div class="todo" id="next-step">次にすること：返信前に事実と条件を確認してください。</div><div class="buttons"><button type="button" id="copy" class="btn secondary">文章をコピー</button><button type="button" id="record" class="btn">未対応として記録</button></div><div id="feedback" class="status" role="status"></div><p class="notice">空席・価格・在庫などは自動確認されません。実際の受付や予約成立を意味する文言に変更する前に、担当者が必ず確認してください。</p></div>
+    </div></div></section>
+  <section class="history shell"><div class="sectionhead"><p class="kicker">02 / TRACK</p><h2>対応状況を残す</h2><p class="help">記録には問い合わせの種類・日時・ステータスのみを保存します。返信本文やお客様の情報は保存しません。</p></div><div class="historyhead"><span class="stats" id="stats">未対応 0件 ／ 確認中 0件 ／ 対応済み 0件</span><div class="buttons"><button id="csv" type="button" class="btn secondary">CSV書き出し</button><button id="erase" type="button" class="btn secondary">記録をすべて削除</button></div></div><div id="records" class="rows"><p class="empty">まだ記録はありません。</p></div><p class="notice">対応履歴はこのブラウザ内だけに保存します。別端末とは同期されず、履歴の削除やブラウザデータ消去で失われます。実際の顧客管理には適切な権限・保護を備えたシステムをご利用ください。</p></section>
+</main><footer><div class="shell">集客整理帳 / 問い合わせ対応ノート　｜　無料試作品。自動返信・顧客データ管理・予約システムではありません。　© 2026</div></footer>
+<script>
+'use strict';
+(function(){
+  var KEY = 'shukyaku-inquiries-v1';
+  var $ = function(id){return document.getElementById(id);};
+  var dictionary = {
+    booking: ['予約・日時','ご希望の日時について、予約状況を確認してから改めてご案内いたします。確認でき次第、担当者よりご連絡いたします。','予約台帳で希望日時・人数・受付条件を確認する。'],
+    pricing: ['料金・メニュー','料金やメニューの詳細につきましては、現在のご案内内容を確認してからお伝えいたします。ご希望の内容がございましたらお知らせください。','正式な料金表・税込表示・追加料金の条件を確認する。'],
+    hours: ['営業時間・休業日','営業時間や休業日について、最新の営業予定を確認してご案内いたします。ご来店前にご確認いただけますと幸いです。','当日の営業時間・臨時休業を確認する。'],
+    stock: ['商品在庫・取り置き','お問い合わせの商品について、現在の在庫とお取り置きの可否を確認いたします。確認後、改めてご案内いたします。','在庫数・取り置き条件・期限を確認する。'],
+    cancel: ['変更・キャンセル','ご連絡ありがとうございます。変更・キャンセルのご希望につきまして、現在のご予約内容と適用条件を確認いたします。確認後、担当者よりご案内いたします。','申込内容・キャンセル規定・返金条件を確認する。'],
+    other: ['その他の質問','お問い合わせの内容を確認し、担当者よりご案内いたします。確認に必要な点がありましたら、改めてご連絡いたします。','質問の内容を担当者が確認する。']
+  };
+  var rows = [];
+  function load(){
+    try{
+      var data=JSON.parse(localStorage.getItem(KEY)||'[]');
+      if(Array.isArray(data)){rows=data.filter(function(r){return r&&typeof r.id==='string'&&dictionary[r.kind]&&['pending','checking','done'].includes(r.status)&&typeof r.at==='string';}).slice(0,50);}
+    }catch(e){rows=[];}
+  }
+  function persist(){
+    try{localStorage.setItem(KEY,JSON.stringify(rows));return true;}catch(e){$('feedback').textContent='端末内に記録を保存できませんでした。';return false;}
+  }
+  function clean(value){return String(value||'').replace(/[\u0000-\u001F\u007F]/g,' ').trim();}
+  function make(){
+    var kind=$('kind').value;
+    var entry=dictionary[kind];
+    var shop=clean($('shop').value).slice(0,60);
+    var facts=clean($('facts').value).slice(0,400);
+    var friendly=$('tone').value==='friendly';
+    var start=friendly?'お問い合わせありがとうございます。':'このたびはお問い合わせいただき、誠にありがとうございます。';
+    var closing=friendly?'どうぞよろしくお願いいたします。':'何卒よろしくお願いいたします。';
+    var body=start+'\n\n'+entry[1];
+    if(facts&&$('confirmed').checked){body+='\n\n【確認済みのご案内】\n'+facts;}
+    body+='\n\n'+closing;
+    if(shop){body+='\n'+shop;}
+    $('output').value=body;
+    $('next-step').textContent='次にすること：'+entry[2];
+    $('feedback').textContent=facts&&!$('confirmed').checked?'未確認の案内情報は返信文に含めていません。':'返信案を作成しました。内容を確認・編集してからお使いください。';
+  }
+  function formatDate(iso){var d=new Date(iso);return isNaN(d.getTime())?'日時不明':d.toLocaleString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});}
+  function render(){
+    var counts={pending:0,checking:0,done:0};
+    rows.forEach(function(r){counts[r.status]++;});
+    $('stats').textContent='未対応 '+counts.pending+'件 ／ 確認中 '+counts.checking+'件 ／ 対応済み '+counts.done+'件';
+    var list=$('records');list.replaceChildren();
+    if(!rows.length){var p=document.createElement('p');p.className='empty';p.textContent='まだ記録はありません。';list.appendChild(p);return;}
+    rows.forEach(function(r){
+      var item=document.createElement('article');item.className='item';
+      var data=document.createElement('div');
+      var strong=document.createElement('strong');strong.textContent=dictionary[r.kind][0];
+      var date=document.createElement('small');date.textContent=formatDate(r.at);
+      data.append(strong,date);
+      var actions=document.createElement('div');actions.className='actions';
+      var sel=document.createElement('select');sel.className='tiny';sel.setAttribute('aria-label',dictionary[r.kind][0]+'の対応状況');
+      [['pending','未対応'],['checking','確認中'],['done','対応済み']].forEach(function(pair){var o=document.createElement('option');o.value=pair[0];o.textContent=pair[1];sel.append(o);});
+      sel.value=r.status;sel.addEventListener('change',function(){r.status=sel.value;persist();render();});
+      var del=document.createElement('button');del.type='button';del.className='tiny';del.textContent='削除';del.setAttribute('aria-label',dictionary[r.kind][0]+'の記録を削除');
+      del.addEventListener('click',function(){rows=rows.filter(function(x){return x.id!==r.id;});persist();render();});
+      actions.append(sel,del);item.append(data,actions);list.append(item);
+    });
+  }
+  $('reply-form').addEventListener('submit',function(e){e.preventDefault();make();});
+  $('clear-inputs').addEventListener('click',function(){$('reply-form').reset();$('output').value='左の内容を選んで「返信案を作成」を押してください。';$('feedback').textContent='入力をリセットしました。';});
+  $('copy').addEventListener('click',async function(){
+    var content=$('output').value;
+    if(!content||content.indexOf('左の内容を選んで')===0){$('feedback').textContent='先に返信案を作成してください。';return;}
+    try{if(!navigator.clipboard||!navigator.clipboard.writeText){throw Error('unsupported');}await navigator.clipboard.writeText(content);$('feedback').textContent='返信案をコピーしました。';}
+    catch(e){$('output').focus();$('output').select();$('feedback').textContent='自動コピーできませんでした。文章を選択したので、手動でコピーしてください。';}
+  });
+  $('record').addEventListener('click',function(){
+    if(!$('output').value||$('output').value.indexOf('左の内容を選んで')===0){$('feedback').textContent='先に返信案を作成してください。';return;}
+    var id=Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);
+    rows.unshift({id:id,kind:$('kind').value,status:'pending',at:new Date().toISOString()});rows=rows.slice(0,50);
+    if(persist()){$('feedback').textContent='未対応として記録しました（本文は保存しません）。';}
+    render();
+  });
+  $('erase').addEventListener('click',function(){if(!rows.length){return;}if(confirm('この端末の対応履歴をすべて削除しますか？')){rows=[];persist();render();}});
+  $('csv').addEventListener('click',function(){
+    if(!rows.length){$('feedback').textContent='書き出す履歴がありません。';return;}
+    var status={pending:'未対応',checking:'確認中',done:'対応済み'};
+    var lines=['日時,種類,ステータス'];
+    rows.forEach(function(r){lines.push([formatDate(r.at),dictionary[r.kind][0],status[r.status]].map(function(s){return '"'+s.replace(/"/g,'""')+'"';}).join(','));});
+    var blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+    var url=URL.createObjectURL(blob);var link=document.createElement('a');link.href=url;link.download='inquiry-status.csv';document.body.appendChild(link);link.click();link.remove();setTimeout(function(){URL.revokeObjectURL(url);},1000);$('feedback').textContent='対応状況のCSVを書き出しました。';
+  });
+  load();render();
+})();
+</script>
+</body>
+</html>
